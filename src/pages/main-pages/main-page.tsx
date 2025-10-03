@@ -1,63 +1,12 @@
 import OfferCard from '../../components/offer-card/offer-card';
+import { CITIES, SORT_OPTIONS } from '../../const';
+import { offersData } from '../../mocks/offers-data';
 
 type MainPageProps = {
   offerCardsCount: number;
 }
 
 function MainPage({ offerCardsCount }: MainPageProps): JSX.Element {
-  const offersData = [
-    {
-      id: 1,
-      isPremium: true,
-      imageSrc: 'markup/img/apartment-01.jpg',
-      price: 120,
-      isBookmark: false,
-      rating: 4,
-      title: 'Beautiful & luxurious apartment at great location',
-      type: 'Apartment'
-    },
-    {
-      id: 2,
-      isPremium: false,
-      imageSrc: 'markup/img/room.jpg',
-      price: 80,
-      isBookmark: true,
-      rating: 4,
-      title: 'Wood and stone place',
-      type: 'Room'
-    },
-    {
-      id: 3,
-      isPremium: false,
-      imageSrc: 'markup/img/apartment-02.jpg',
-      price: 132,
-      isBookmark: false,
-      rating: 4,
-      title: 'Canal View Prinsengracht',
-      type: 'Apartment'
-    },
-    {
-      id: 4,
-      isPremium: true,
-      imageSrc: 'markup/img/apartment-03.jpg',
-      price: 180,
-      isBookmark: false,
-      rating: 5,
-      title: 'Nice, cozy, warm big bed apartment',
-      type: 'Apartment'
-    },
-    {
-      id: 5,
-      isPremium: false,
-      imageSrc: 'markup/img/room.jpg',
-      price: 80,
-      isBookmark: true,
-      rating: 4,
-      title: 'Wood and stone place',
-      type: 'Room'
-    }
-  ];
-
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -95,14 +44,7 @@ function MainPage({ offerCardsCount }: MainPageProps): JSX.Element {
           <section className="locations container">
             <ul className="locations__list tabs__list">
               {
-                [
-                  'Paris',
-                  'Cologne',
-                  'Brussels',
-                  'Amsterdam',
-                  'Hamburg',
-                  'Dusseldorf'
-                ].map((city) => (
+                CITIES.map((city) => (
                   <li className="locations__item" key={city}>
                     <a
                       className={`locations__item-link tabs__item ${city === 'Amsterdam' ? 'tabs__item--active' : ''
@@ -132,13 +74,7 @@ function MainPage({ offerCardsCount }: MainPageProps): JSX.Element {
                 </span>
                 <ul className="places__options places__options--custom places__options--opened">
                   {
-                    [
-                      'Popular',
-                      'Price: low to high',
-                      'Price: high to low',
-                      'Top rated first'
-
-                    ].map((option, index) => (
+                    SORT_OPTIONS.map((option, index) => (
                       <li
                         key={option}
                         className={`places__option ${index === 0 ? 'places__option--active' : ''}`}
