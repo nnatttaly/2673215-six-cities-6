@@ -18,3 +18,8 @@ export const SORT_OPTIONS = [
   'Top rated first'
 ] as const;
 
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
