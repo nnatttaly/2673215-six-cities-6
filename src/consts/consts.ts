@@ -17,3 +17,4 @@ export const SORT_OPTIONS = [
   'Price: high to low',
   'Top rated first'
 ] as const;
+

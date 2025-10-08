@@ -1,5 +1,5 @@
 import OfferCard from '../../components/offer-card/offer-card';
-import { CITIES, SORT_OPTIONS } from '../../const';
+import { CITIES, SORT_OPTIONS } from '../../consts/consts';
 import { offersData } from '../../mocks/offers-data';
 
 type MainPageProps = {
