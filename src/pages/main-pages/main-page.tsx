@@ -1,6 +1,7 @@
 import OfferCard from '../../components/offer-card/offer-card';
-import { CITIES, SORT_OPTIONS } from '../../const';
+import { CITIES, SORT_OPTIONS } from '../../consts/index.ts';
 import { offersData } from '../../mocks/offers-data';
+import {Helmet} from 'react-helmet-async';
 
 type MainPageProps = {
   offerCardsCount: number;
@@ -9,6 +10,9 @@ type MainPageProps = {
 function MainPage({ offerCardsCount }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>Шесть городов</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

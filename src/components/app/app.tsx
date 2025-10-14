@@ -1,4 +1,12 @@
+import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import { AppRoute, AuthorizationStatus } from '../../consts/index.ts';
 import MainPage from '../../pages/main-pages/main-page.tsx';
+import LoginPage from '../../pages/login-pages/login-pages.tsx';
+import FavoritesPage from '../../pages/favorites-pages/favorites-page.tsx';
+import OfferPage from '../../pages/offer-pages/offer-page.tsx';
+import NotFoundPage from '../../pages/not-found-pages/not-found-page.tsx';
+import PrivateRoute from '../private-route/private-route';
+import {HelmetProvider} from 'react-helmet-async';
 
 type AppScreenProps = {
   offerCardsCount: number;
@@ -6,7 +14,38 @@ type AppScreenProps = {
 
 function App({ offerCardsCount }: AppScreenProps): JSX.Element {
   return (
-    <MainPage offerCardsCount={offerCardsCount} />
+    <HelmetProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path={AppRoute.Main}
+            element={<MainPage offerCardsCount={offerCardsCount} />}
+          />
+          <Route
+            path={AppRoute.Login}
+            element={<LoginPage />}
+          />
+          <Route
+            path={AppRoute.Favorites}
+            element={
+              <PrivateRoute
+                authorizationStatus={AuthorizationStatus.NoAuth}
+              >
+                <FavoritesPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={AppRoute.Offer}
+            element={<OfferPage />}
+          />
+          <Route
+            path="*"
+            element={<NotFoundPage />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </HelmetProvider>
   );
 }
 
