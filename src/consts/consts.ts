@@ -1,16 +1,3 @@
-export const Setting = {
-  OfferCardsCount: 312
-};
-
-export const CITIES = [
-  'Paris',
-  'Cologne',
-  'Brussels',
-  'Amsterdam',
-  'Hamburg',
-  'Dusseldorf'
-] as const;
-
 export const SORT_OPTIONS = [
   'Popular',
   'Price: low to high',
@@ -23,3 +10,5 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export const MAX_RATING = 5;
