@@ -1,6 +1,5 @@
 import { Offer } from '../types/index.js';
 
-
 export const mockOffers: Offer[] = [
   {
     id: '1',
@@ -8,7 +7,7 @@ export const mockOffers: Offer[] = [
     previewImage: 'markup/img/apartment-01.jpg',
     price: 120,
     isFavorite: false,
-    rating: 4,
+    rating: 4.8,
     title: 'Beautiful & luxurious apartment at great location',
     housingType: 'Apartment',
     images: [

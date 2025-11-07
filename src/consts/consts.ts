@@ -12,3 +12,4 @@ export enum AuthorizationStatus {
 }
 
 export const MAX_RATING = 5;
+export const IMAGES_LIMIT = 6;

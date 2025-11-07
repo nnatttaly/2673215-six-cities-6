@@ -1,20 +1,23 @@
 import OfferCard from '../offer-card/offer-card';
 import { Offer } from '../../types/index.js';
 import { useState } from 'react';
+import { LayoutType } from '../../types/index.js';
 
 type OffersListProps = {
   offers: Offer[];
-  isFavoriteLayout?: boolean;
+  layoutType?: LayoutType;
 };
 
 function OffersList({
   offers,
-  isFavoriteLayout = false,
+  layoutType = 'cities',
 }: OffersListProps): JSX.Element {
   const [, setActiveOfferId] = useState<string | null>(null);
-  const listClass = isFavoriteLayout
-    ? 'favorites__places'
-    : 'cities__places-list places__list tabs__content';
+  const listClass = {
+    'cities': 'cities__places-list places__list tabs__content',
+    'favorites': 'favorites__places',
+    'near-places': 'near-places__list places__list',
+  }[layoutType];
 
   return (
     <div className={listClass}>
@@ -24,7 +27,7 @@ function OffersList({
           offer={offer}
           onCardHover={(offerId) => setActiveOfferId(offerId)}
           onCardLeave={() => setActiveOfferId(null)}
-          isFavoriteLayout={isFavoriteLayout}
+          layoutType={layoutType}
         />
       ))}
     </div>

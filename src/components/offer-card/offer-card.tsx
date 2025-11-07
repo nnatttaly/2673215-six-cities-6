@@ -1,20 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/index.js';
 import { MAX_RATING } from '../../consts/index.js';
-import { OfferCardImageSizes, BOOKMARK_ICON_SIZE } from '../../consts/index.js';
+import { LayoutType } from '../../types/index.js';
+import {
+  OFFER_CARD_IMAGE_SIZE,
+  PLACE_CARD_BOOKMARK_ICON_SIZE,
+} from '../../consts/index.js';
 
 type OfferCardProps = {
   offer: Offer;
   onCardHover: (offerId: string | null) => void;
   onCardLeave: () => void;
-  isFavoriteLayout?: boolean;
+  layoutType: LayoutType;
 };
 
 function OfferCard({
   offer,
   onCardHover,
   onCardLeave,
-  isFavoriteLayout = false,
+  layoutType,
 }: OfferCardProps): JSX.Element {
   const {
     id,
@@ -27,15 +31,12 @@ function OfferCard({
     rating,
   } = offer;
 
-  const cardContext = isFavoriteLayout ? 'favorites' : 'cities';
-  const {imageWidth, imageHeight} = isFavoriteLayout
-    ? OfferCardImageSizes.COMPACT
-    : OfferCardImageSizes.NORMAL;
-  const ratingWidth = `${(rating / MAX_RATING) * 100}%`;
+  const { width, height } = OFFER_CARD_IMAGE_SIZE[layoutType];
+  const ratingWidth = `${(Math.round(rating) / MAX_RATING) * 100}%`;
 
   return (
     <article
-      className={`${cardContext}__card place-card`}
+      className={`${layoutType}__card place-card`}
       onMouseEnter={() => onCardHover(id)}
       onMouseLeave={onCardLeave}
     >
@@ -44,22 +45,20 @@ function OfferCard({
           <span>Premium</span>
         </div>
       )}
-      <div
-        className={`${cardContext}__image-wrapper place-card__image-wrapper`}
-      >
+      <div className={`${layoutType}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={imageWidth}
-            height={imageHeight}
+            width={width}
+            height={height}
             alt="Place image"
           />
         </Link>
       </div>
       <div
         className={`${
-          isFavoriteLayout ? 'favorites__card-info ' : ''
+          layoutType === 'favorites' ? 'favorites__card-info ' : ''
         }place-card__info`}
       >
         <div className="place-card__price-wrapper">
@@ -75,8 +74,8 @@ function OfferCard({
           >
             <svg
               className="place-card__bookmark-icon"
-              width={BOOKMARK_ICON_SIZE.width}
-              height={BOOKMARK_ICON_SIZE.height}
+              width={PLACE_CARD_BOOKMARK_ICON_SIZE.width}
+              height={PLACE_CARD_BOOKMARK_ICON_SIZE.height}
             >
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

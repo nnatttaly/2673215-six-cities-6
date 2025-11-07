@@ -28,7 +28,10 @@ function App({ offers }: AppScreenProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Offer} element={<OfferPage />} />
+          <Route
+            path={AppRoute.Offer}
+            element={<OfferPage offer={offers[0]} nearbyOffers={offers.slice(1)} />} // ToDo: брать id предложения из пути
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

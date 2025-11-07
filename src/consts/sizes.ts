@@ -1,12 +1,18 @@
-export const OfferCardImageSizes = {
-  NORMAL: {
-    imageWidth: 260,
-    imageHeight: 200,
+export const OFFER_CARD_IMAGE_SIZE = {
+  cities: {
+    width: 260,
+    height: 200,
   },
-  COMPACT: {
-    imageWidth: 150,
-    imageHeight: 110,
+  favorites: {
+    width: 150,
+    height: 110,
+  },
+  'near-places': {
+    width: 260,
+    height: 200,
   },
 } as const;
 
-export const BOOKMARK_ICON_SIZE = { width: 18, height: 19 } as const;
+export const PLACE_CARD_BOOKMARK_ICON_SIZE = { width: 18, height: 19 } as const;
+export const OFFER_BOOKMARK_ICON_SIZE = { width: 31, height: 33 } as const;
+export const HOST_AVATAR_SIZE = { width: 74, height: 74 } as const;
