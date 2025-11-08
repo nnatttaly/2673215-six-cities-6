@@ -1,8 +1,7 @@
-import OffersList from '../../components/offers-list/offers-list';
-import { SORT_OPTIONS } from '../../consts/index.ts';
-import { cityNames } from '../../types/index.js';
-import PageHelmet from '../../components/page-helmet/page-helmet.js';
-import { Offer } from '../../types/index.js';
+import OffersList from '@components/offers-list/offers-list';
+import { SORT_OPTIONS } from 'consts';
+import { cityNames, Offer } from 'types';
+import PageHelmet from '@components/page-helmet/page-helmet.js';
 
 type MainPageProps = {
   offers: Offer[];

@@ -1,7 +1,6 @@
-import PageHelmet from '../../components/page-helmet/page-helmet.js';
-import { Offer } from '../../types/index.js';
-import { cityNames } from '../../types/index.js';
-import OffersList from '../../components/offers-list/offers-list.js';
+import PageHelmet from '@components/page-helmet/page-helmet.js';
+import { Offer, cityNames } from 'types';
+import OffersList from '@components/offers-list/offers-list.js';
 
 type FavoritesPageProps = {
   favoriteOffers: Offer[];

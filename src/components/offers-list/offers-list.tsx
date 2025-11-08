@@ -1,7 +1,6 @@
 import OfferCard from '../offer-card/offer-card';
-import { Offer } from '../../types/index.js';
+import { Offer, LayoutType } from 'types';
 import { useState } from 'react';
-import { LayoutType } from '../../types/index.js';
 
 type OffersListProps = {
   offers: Offer[];
@@ -14,8 +13,8 @@ function OffersList({
 }: OffersListProps): JSX.Element {
   const [, setActiveOfferId] = useState<string | null>(null);
   const listClass = {
-    'cities': 'cities__places-list places__list tabs__content',
-    'favorites': 'favorites__places',
+    cities: 'cities__places-list places__list tabs__content',
+    favorites: 'favorites__places',
     'near-places': 'near-places__list places__list',
   }[layoutType];
 

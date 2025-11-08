@@ -1,6 +1,6 @@
-import PageHelmet from '../../components/page-helmet/page-helmet.js';
+import PageHelmet from '@components/page-helmet/page-helmet.js';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../consts/index.ts';
+import { AppRoute } from 'consts';
 
 function NotFoundPage(): JSX.Element {
   return (

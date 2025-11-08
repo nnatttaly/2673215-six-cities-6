@@ -1,4 +1,4 @@
-import PageHelmet from '../../components/page-helmet/page-helmet.js';
+import PageHelmet from '@components/page-helmet/page-helmet.js';
 
 function LoginPage(): JSX.Element {
   return (

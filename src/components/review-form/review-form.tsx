@@ -5,7 +5,7 @@ import {
   MAX_COMMENT_LENGTH,
   RATINGS,
   FORM_STAR_IMAGE_SIZE,
-} from '../../consts/index.js';
+} from '../../consts';
 
 function ReviewForm(): JSX.Element {
   const [reviewData, setReviewData] = useState({
@@ -17,9 +17,7 @@ function ReviewForm(): JSX.Element {
     setReviewData({ ...reviewData, rating: value });
   };
 
-  const handleCommentChange = (
-    evt: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handleCommentChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewData({ ...reviewData, comment: evt.target.value });
   };
 

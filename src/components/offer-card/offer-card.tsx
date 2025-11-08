@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/index.js';
-import { MAX_RATING } from '../../consts/index.js';
-import { LayoutType } from '../../types/index.js';
+import { Offer, LayoutType } from 'types';
 import {
+  MAX_RATING,
   OFFER_CARD_IMAGE_SIZE,
   PLACE_CARD_BOOKMARK_ICON_SIZE,
-} from '../../consts/index.js';
+} from 'consts';
 
 type OfferCardProps = {
   offer: Offer;

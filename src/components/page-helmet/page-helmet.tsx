@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useLocation, matchPath } from 'react-router-dom';
-import { AppRoute } from '../../consts/index.js';
-import { PAGE_TITLES } from '../../consts/index.js';
+import { AppRoute, PAGE_TITLES } from 'consts';
 
 function PageHelmet(): JSX.Element {
   const location = useLocation();

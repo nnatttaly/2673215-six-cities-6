@@ -1,13 +1,13 @@
-import { Offer } from '../../types/index.js';
-import OffersList from '../../components/offers-list/offers-list.js';
-import ReviewForm from '../../components/review-form/review-form.js';
-import PageHelmet from '../../components/page-helmet/page-helmet.js';
+import { Offer } from 'types';
+import OffersList from '@components/offers-list/offers-list.js';
+import ReviewForm from '@components/review-form/review-form.js';
+import PageHelmet from '@components/page-helmet/page-helmet.js';
 import {
   IMAGES_LIMIT,
   MAX_RATING,
   OFFER_BOOKMARK_ICON_SIZE,
   HOST_AVATAR_SIZE,
-} from '../../consts/index.js';
+} from '../../consts';
 
 type OfferPage = {
   offer: Offer;
@@ -35,7 +35,7 @@ function OfferPage({ offer, nearbyOffers }: OfferPage): JSX.Element {
 
   return (
     <div className="page">
-      <PageHelmet/>
+      <PageHelmet />
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
