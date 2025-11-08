@@ -11,5 +11,15 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
+export const RATINGS = [
+  { value: 5, title: 'perfect' },
+  { value: 4, title: 'good' },
+  { value: 3, title: 'not bad' },
+  { value: 2, title: 'badly' },
+  { value: 1, title: 'terribly' },
+] as const;
+
 export const MAX_RATING = 5;
 export const IMAGES_LIMIT = 6;
+export const MIN_COMMENT_LENGTH = 50 as const;
+export const MAX_COMMENT_LENGTH = 300 as const;
