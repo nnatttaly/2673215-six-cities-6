@@ -19,7 +19,7 @@ export const RATINGS = [
   { value: 1, title: 'terribly' },
 ] as const;
 
-export const MAX_RATING = 5;
-export const IMAGES_LIMIT = 6;
+export const MAX_RATING = 5 as const;
+export const IMAGES_LIMIT = 6 as const;
 export const MIN_COMMENT_LENGTH = 50 as const;
 export const MAX_COMMENT_LENGTH = 300 as const;

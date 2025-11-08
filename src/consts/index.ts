@@ -1,3 +1,4 @@
-export * from './consts.ts';
-export * from './routes.ts';
-export * from './sizes.ts';
+export * from './consts.js';
+export * from './routes.js';
+export * from './sizes.js';
+export * from './page-titles.js';

@@ -1,4 +1,4 @@
-import {Helmet} from 'react-helmet-async';
+import PageHelmet from '../../components/page-helmet/page-helmet.js';
 import { Offer } from '../../types/index.js';
 import { cityNames } from '../../types/index.js';
 import OffersList from '../../components/offers-list/offers-list.js';
@@ -10,9 +10,7 @@ type FavoritesPageProps = {
 function FavoritesPage({ favoriteOffers }: FavoritesPageProps): JSX.Element {
   return (
     <div className="page">
-      <Helmet>
-        <title>Шесть городов. Избранное</title>
-      </Helmet>
+      <PageHelmet />
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -80,7 +78,10 @@ function FavoritesPage({ favoriteOffers }: FavoritesPageProps): JSX.Element {
                         </div>
                       </div>
                       <div className="favorites__places">
-                        <OffersList offers={cityOffers} isFavoriteLayout />
+                        <OffersList
+                          offers={cityOffers}
+                          layoutType="favorites"
+                        />
                       </div>
                     </li>
                   );

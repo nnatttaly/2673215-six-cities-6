@@ -1,7 +1,7 @@
-import {Helmet} from 'react-helmet-async';
 import { Offer } from '../../types/index.js';
 import OffersList from '../../components/offers-list/offers-list.js';
 import ReviewForm from '../../components/review-form/review-form.js';
+import PageHelmet from '../../components/page-helmet/page-helmet.js';
 import {
   IMAGES_LIMIT,
   MAX_RATING,
@@ -35,9 +35,7 @@ function OfferPage({ offer, nearbyOffers }: OfferPage): JSX.Element {
 
   return (
     <div className="page">
-      <Helmet>
-        <title>Шесть городов. Предложение</title>
-      </Helmet>
+      <PageHelmet/>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">

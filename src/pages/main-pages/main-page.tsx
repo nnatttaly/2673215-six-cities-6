@@ -1,7 +1,7 @@
 import OffersList from '../../components/offers-list/offers-list';
 import { SORT_OPTIONS } from '../../consts/index.ts';
 import { cityNames } from '../../types/index.js';
-import { Helmet } from 'react-helmet-async';
+import PageHelmet from '../../components/page-helmet/page-helmet.js';
 import { Offer } from '../../types/index.js';
 
 type MainPageProps = {
@@ -11,9 +11,7 @@ type MainPageProps = {
 function MainPage({ offers }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
-      <Helmet>
-        <title>Шесть городов</title>
-      </Helmet>
+      <PageHelmet />
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
@@ -103,7 +101,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 </ul>
               </form>
 
-              <OffersList offers={offers} />
+              <OffersList offers={offers} layoutType="cities" />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
