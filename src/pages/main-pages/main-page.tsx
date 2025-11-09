@@ -2,12 +2,26 @@ import OffersList from '@components/offers-list/offers-list';
 import { SORT_OPTIONS } from 'consts';
 import { cityNames, Offer } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
+import { useState } from 'react';
+import Map from '@components/map/map.js';
 
 type MainPageProps = {
   offers: Offer[];
 };
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
+  // TBD: Пока используем первый город из офферов, потом будет выбор города
+  const currentCity = offers[0]?.city;
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+
+  // TBD: Пока показываем все офферы, потом будем фильтровать по выбранному городу
+  const currentOffers = offers;
+
+  const handleOfferHover = (offerId: string | null) => {
+    const offer = offerId ? offers.find((item) => item.id === offerId) : null;
+    setSelectedOffer(offer || null);
+  };
+
   return (
     <div className="page page--gray page--main">
       <PageHelmet />
@@ -100,10 +114,21 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 </ul>
               </form>
 
-              <OffersList offers={offers} layoutType="cities" />
+              <OffersList
+                offers={offers}
+                layoutType="cities"
+                onCardHover={handleOfferHover}
+                onCardLeave={() => setSelectedOffer(null)}
+              />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              {currentCity && (
+                <Map
+                  city={currentCity}
+                  offers={currentOffers}
+                  selectedOffer={selectedOffer}
+                />
+              )}
             </div>
           </div>
         </div>

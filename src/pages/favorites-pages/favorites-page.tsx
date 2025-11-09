@@ -61,7 +61,7 @@ function FavoritesPage({ favoriteOffers }: FavoritesPageProps): JSX.Element {
                 .reverse()
                 .map((city) => {
                   const cityOffers = favoriteOffers.filter(
-                    (offer) => offer.city === city
+                    (offer) => offer.city.name === city
                   );
                   if (cityOffers.length === 0) {
                     return null;
