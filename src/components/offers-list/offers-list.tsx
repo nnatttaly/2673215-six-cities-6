@@ -4,12 +4,16 @@ import { useState } from 'react';
 
 type OffersListProps = {
   offers: Offer[];
-  layoutType?: LayoutType;
+  layoutType: LayoutType;
+  onCardHover?: (offerId: string | null) => void;
+  onCardLeave?: () => void;
 };
 
 function OffersList({
   offers,
-  layoutType = 'cities',
+  layoutType,
+  onCardHover,
+  onCardLeave,
 }: OffersListProps): JSX.Element {
   const [, setActiveOfferId] = useState<string | null>(null);
   const listClass = {
@@ -18,14 +22,24 @@ function OffersList({
     'near-places': 'near-places__list places__list',
   }[layoutType];
 
+  const handleCardHover = (offerId: string | null) => {
+    setActiveOfferId(offerId);
+    onCardHover?.(offerId);
+  };
+
+  const handleCardLeave = () => {
+    setActiveOfferId(null);
+    onCardLeave?.();
+  };
+
   return (
     <div className={listClass}>
       {offers.map((offer) => (
         <OfferCard
           key={offer.id}
           offer={offer}
-          onCardHover={(offerId) => setActiveOfferId(offerId)}
-          onCardLeave={() => setActiveOfferId(null)}
+          onCardHover={handleCardHover}
+          onCardLeave={handleCardLeave}
           layoutType={layoutType}
         />
       ))}

@@ -23,3 +23,6 @@ export const MAX_RATING = 5 as const;
 export const IMAGES_LIMIT = 6 as const;
 export const MIN_COMMENT_LENGTH = 50 as const;
 export const MAX_COMMENT_LENGTH = 300 as const;
+
+export const URL_MARKER_DEFAULT = 'img/pin.svg';
+export const URL_MARKER_CURRENT = 'img/pin-active.svg';
