@@ -40,11 +40,18 @@ export const mockOffers: Offer[] = [
       'Cabel TV',
       'Fridge',
     ],
-    city: 'Amsterdam',
+    city: {
+      name: 'Amsterdam',
+      coordinates: {
+        lat: 52.370216,
+        lng: 4.895168,
+      },
+      zoom: 12,
+    },
     commentCount: 1,
     coordinates: {
-      latitude: 52.3609553943508,
-      longitude: 4.85309666406198,
+      lat: 52.3909553943508,
+      lng: 4.85309666406198,
     },
   },
   {
@@ -83,11 +90,18 @@ export const mockOffers: Offer[] = [
       'Baby seat',
       'Fridge',
     ],
-    city: 'Amsterdam',
+    city: {
+      name: 'Amsterdam',
+      coordinates: {
+        lat: 52.370216,
+        lng: 4.895168,
+      },
+      zoom: 12,
+    },
     commentCount: 1,
     coordinates: {
-      latitude: 52.3609553943508,
-      longitude: 4.85309666406198,
+      lat: 52.3609553943508,
+      lng: 4.85309666406198,
     },
   },
   {
@@ -125,11 +139,18 @@ export const mockOffers: Offer[] = [
       'Cabel TV',
       'Fridge',
     ],
-    city: 'Cologne',
+    city: {
+      name: 'Amsterdam',
+      coordinates: {
+        lat: 52.370216,
+        lng: 4.895168,
+      },
+      zoom: 12,
+    },
     commentCount: 1,
     coordinates: {
-      latitude: 50.938361,
-      longitude: 6.959974,
+      lat: 52.3909553943508,
+      lng: 4.929309666406198,
     },
   },
   {
@@ -168,11 +189,18 @@ export const mockOffers: Offer[] = [
       'Dishwasher',
       'Fridge',
     ],
-    city: 'Brussels',
+    city: {
+      name: 'Amsterdam',
+      coordinates: {
+        lat: 52.370216,
+        lng: 4.895168,
+      },
+      zoom: 12,
+    },
     commentCount: 1,
     coordinates: {
-      latitude: 50.846557,
-      longitude: 4.351697,
+      lat: 52.3809553943508,
+      lng: 4.939309666406198,
     },
   },
 ];

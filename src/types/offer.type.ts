@@ -1,7 +1,7 @@
 import { HousingType } from './housing-types.js';
 import { User } from './user.type.js';
 import { Coordinates } from './coordinates.type.js';
-import { CityName } from './city-names.js';
+import { City } from './city.type.js';
 
 export type Offer = {
   id: string;
@@ -18,7 +18,7 @@ export type Offer = {
   maxAdults: number;
   host: User;
   amenities: string[];
-  city: CityName;
+  city: City;
   commentCount: number;
   coordinates: Coordinates;
 };
