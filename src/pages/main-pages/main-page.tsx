@@ -10,12 +10,12 @@ type MainPageProps = {
 };
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
-  // TBD: Пока используем первый город из офферов, потом будет выбор города
-  const currentCity = offers[0]?.city;
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
-
-  // TBD: Пока показываем все офферы, потом будем фильтровать по выбранному городу
+  // ToDo: Пока Амстердам
+  const currentCity = offers[0].city;
+  // ToDo: Пока все офферы, потом будет фильтрация по выбранному городу
   const currentOffers = offers;
+
+  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 
   const handleOfferHover = (offerId: string | null) => {
     const offer = offerId ? offers.find((item) => item.id === offerId) : null;
@@ -127,6 +127,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                   city={currentCity}
                   offers={currentOffers}
                   selectedOffer={selectedOffer}
+                  className="cities"
                 />
               )}
             </div>

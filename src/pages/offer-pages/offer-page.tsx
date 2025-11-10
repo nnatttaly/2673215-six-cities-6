@@ -3,10 +3,12 @@ import OffersList from '@components/offers-list/offers-list.js';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import ReviewsList from '@components/reviews-list/reviews-list';
 import Rating from '@components/rating/rating.js';
+import Map from '@components/map/map.js';
 import {
   IMAGES_LIMIT,
   OFFER_BOOKMARK_ICON_SIZE,
   HOST_AVATAR_SIZE,
+  NEARBY_OFFERS_LIMIT,
 } from 'consts';
 
 type OfferPage = {
@@ -31,6 +33,9 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
     commentCount,
     isFavorite,
   } = offer;
+
+  const nearbyOffersToShow = nearbyOffers.slice(0, NEARBY_OFFERS_LIMIT);
+  const mapOffers = [offer, ...nearbyOffersToShow];
 
   return (
     <div className="page">
@@ -166,14 +171,22 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
               <ReviewsList commentCount={commentCount} reviews={reviews} />
             </div>
           </div>
-          <section className="offer__map map"></section>
+          <Map
+            city={offer.city}
+            offers={mapOffers}
+            selectedOffer={offer}
+            className="offer"
+          />
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <OffersList offers={nearbyOffers} layoutType="near-places" />
+            <OffersList
+              offers={nearbyOffersToShow}
+              layoutType="near-places"
+            />
           </section>
         </div>
       </main>
