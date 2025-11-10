@@ -1,4 +1,4 @@
-import { Offer } from '../types/index.js';
+import { Offer } from 'types';
 
 export const mockOffers: Offer[] = [
   {
@@ -48,7 +48,7 @@ export const mockOffers: Offer[] = [
       },
       zoom: 12,
     },
-    commentCount: 1,
+    commentCount: 3,
     coordinates: {
       lat: 52.3909553943508,
       lng: 4.85309666406198,
@@ -98,7 +98,7 @@ export const mockOffers: Offer[] = [
       },
       zoom: 12,
     },
-    commentCount: 1,
+    commentCount: 3,
     coordinates: {
       lat: 52.3609553943508,
       lng: 4.85309666406198,
@@ -147,7 +147,7 @@ export const mockOffers: Offer[] = [
       },
       zoom: 12,
     },
-    commentCount: 1,
+    commentCount: 3,
     coordinates: {
       lat: 52.3909553943508,
       lng: 4.929309666406198,
@@ -159,7 +159,7 @@ export const mockOffers: Offer[] = [
     previewImage: 'markup/img/apartment-03.jpg',
     price: 180,
     isFavorite: false,
-    rating: 1,
+    rating: 1.6,
     title: 'Nice, cozy, warm big bed apartment',
     housingType: 'Apartment',
     images: [
@@ -197,7 +197,7 @@ export const mockOffers: Offer[] = [
       },
       zoom: 12,
     },
-    commentCount: 1,
+    commentCount: 3,
     coordinates: {
       lat: 52.3809553943508,
       lng: 4.939309666406198,

@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Offer, LayoutType } from 'types';
-import {
-  MAX_RATING,
-  OFFER_CARD_IMAGE_SIZE,
-  PLACE_CARD_BOOKMARK_ICON_SIZE,
-} from 'consts';
+import Rating from '@components/rating/rating.js';
+import { OFFER_CARD_IMAGE_SIZE, PLACE_CARD_BOOKMARK_ICON_SIZE } from 'consts';
 
 type OfferCardProps = {
   offer: Offer;
@@ -31,7 +28,6 @@ function OfferCard({
   } = offer;
 
   const { width, height } = OFFER_CARD_IMAGE_SIZE[layoutType];
-  const ratingWidth = `${(Math.round(rating) / MAX_RATING) * 100}%`;
 
   return (
     <article
@@ -83,12 +79,7 @@ function OfferCard({
             </span>
           </button>
         </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{ width: ratingWidth }}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <Rating rating={rating} className="place-card" />
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>

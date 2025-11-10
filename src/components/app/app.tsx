@@ -7,13 +7,14 @@ import OfferPage from '@pages/offer-pages/offer-page.tsx';
 import NotFoundPage from '@pages/not-found-pages/not-found-page.tsx';
 import PrivateRoute from '@components/private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { Offer } from 'types';
+import { Offer, Review } from 'types';
 
 type AppScreenProps = {
   offers: Offer[];
+  reviews: Review[];
 };
 
-function App({ offers }: AppScreenProps): JSX.Element {
+function App({ offers, reviews }: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -31,7 +32,11 @@ function App({ offers }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Offer}
             element={
-              <OfferPage offer={offers[0]} nearbyOffers={offers.slice(1)} />
+              <OfferPage
+                offer={offers[0]}
+                reviews={reviews}
+                nearbyOffers={offers.slice(1)}
+              />
             } // ToDo: брать id предложения из пути
           />
           <Route path="*" element={<NotFoundPage />} />
