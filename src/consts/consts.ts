@@ -1,9 +1,4 @@
-export const SORT_OPTIONS = [
-  'Popular',
-  'Price: low to high',
-  'Price: high to low',
-  'Top rated first'
-] as const;
+import { SortOption } from 'types';
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -18,6 +13,8 @@ export const RATINGS = [
   { value: 2, title: 'badly' },
   { value: 1, title: 'terribly' },
 ] as const;
+
+export const DEFAULT_SORT_OPTION: SortOption = 'Popular';
 
 export const MAX_RATING = 5 as const;
 export const IMAGES_LIMIT = 6 as const;

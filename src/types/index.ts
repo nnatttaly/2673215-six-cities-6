@@ -6,3 +6,4 @@ export * from './layout-types.js';
 export * from './city.type.js';
 export * from './review.type.js';
 export * from './state.js';
+export * from './sort-options.type.js';

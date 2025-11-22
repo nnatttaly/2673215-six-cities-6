@@ -1,6 +1,5 @@
 import OffersList from '@components/offers-list/offers-list';
-import { SORT_OPTIONS } from 'consts';
-import { Offer } from 'types';
+import { Offer, SortOption } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import { useState } from 'react';
 import Map from '@components/map/map.js';
@@ -8,6 +7,9 @@ import CitiesList from '@components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '@hooks/index.js';
 import { changeCity } from '@store/action';
 import { getPluralWord } from '@utils/word-utils';
+import { sortOffers } from '@utils/sort-utils';
+import SortOptions from '@components/sort-options/sort-options';
+import { DEFAULT_SORT_OPTION } from 'consts';
 
 function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
@@ -18,12 +20,19 @@ function MainPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+  const [currentSort, setCurrentSort] =
+    useState<SortOption>(DEFAULT_SORT_OPTION);
+  const sortedOffers = sortOffers(currentCityOffers, currentSort);
 
   const handleOfferHover = (offerId: string | null) => {
     const offer = offerId
       ? currentCityOffers.find((item) => item.id === offerId)
       : null;
     setSelectedOffer(offer || null);
+  };
+
+  const handleSortChange = (sortOption: SortOption) => {
+    setCurrentSort(sortOption);
   };
 
   return (
@@ -83,31 +92,13 @@ function MainPage(): JSX.Element {
                 {getPluralWord(currentCityOffers.length, 'place', 'places')} to
                 stay in {currentCity.name}
               </b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width={7} height={4}>
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  {SORT_OPTIONS.map((option, index) => (
-                    <li
-                      key={option}
-                      className={`places__option ${
-                        index === 0 ? 'places__option--active' : ''
-                      }`}
-                      tabIndex={0}
-                    >
-                      {option}
-                    </li>
-                  ))}
-                </ul>
-              </form>
+              <SortOptions
+                currentSort={currentSort}
+                onSortChange={handleSortChange}
+              />
 
               <OffersList
-                offers={currentCityOffers}
+                offers={sortedOffers}
                 layoutType="cities"
                 onCardHover={handleOfferHover}
                 onCardLeave={() => setSelectedOffer(null)}
