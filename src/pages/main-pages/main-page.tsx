@@ -7,6 +7,7 @@ import Map from '@components/map/map.js';
 import CitiesList from '@components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '@hooks/index.js';
 import { changeCity } from '@store/action';
+import { getPluralWord } from '@utils/word-utils';
 
 function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
@@ -79,8 +80,8 @@ function MainPage(): JSX.Element {
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
                 {currentCityOffers.length}{' '}
-                {currentCityOffers.length === 1 ? 'place' : 'places'} to stay in{' '}
-                {currentCity.name}
+                {getPluralWord(currentCityOffers.length, 'place', 'places')} to
+                stay in {currentCity.name}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>

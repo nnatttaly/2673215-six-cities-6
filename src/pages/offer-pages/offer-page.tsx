@@ -4,6 +4,7 @@ import PageHelmet from '@components/page-helmet/page-helmet.js';
 import ReviewsList from '@components/reviews-list/reviews-list';
 import Rating from '@components/rating/rating.js';
 import Map from '@components/map/map.js';
+import { getPluralWord } from '@utils/word-utils';
 import {
   IMAGES_LIMIT,
   OFFER_BOOKMARK_ICON_SIZE,
@@ -127,10 +128,10 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
                   {housingType}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms} Bedroom{bedrooms !== 1 ? 's' : ''}
+                  {bedrooms} {getPluralWord(bedrooms, 'Bedroom', 'Bedrooms')}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} adult{maxAdults !== 1 ? 's' : ''}
+                  Max {maxAdults} {getPluralWord(maxAdults, 'adult', 'adults')}
                 </li>
               </ul>
               <div className="offer__price">
@@ -183,10 +184,7 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <OffersList
-              offers={nearbyOffersToShow}
-              layoutType="near-places"
-            />
+            <OffersList offers={nearbyOffersToShow} layoutType="near-places" />
           </section>
         </div>
       </main>
