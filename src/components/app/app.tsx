@@ -8,6 +8,9 @@ import NotFoundPage from '@pages/not-found-pages/not-found-page.tsx';
 import PrivateRoute from '@components/private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
 import { Offer, Review } from 'types';
+import { useAppDispatch } from '@hooks/index.js';
+import { fillOffers } from '@store/action';
+import { useEffect } from 'react';
 
 type AppScreenProps = {
   offers: Offer[];
@@ -15,17 +18,23 @@ type AppScreenProps = {
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fillOffers(offers));
+  }, [dispatch, offers]);
+
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path={AppRoute.Main} element={<MainPage offers={offers} />} />
+          <Route path={AppRoute.Main} element={<MainPage />} />
           <Route path={AppRoute.Login} element={<LoginPage />} />
           <Route
             path={AppRoute.Favorites}
             element={
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <FavoritesPage favoriteOffers={offers} />
+                <FavoritesPage />
               </PrivateRoute>
             }
           />

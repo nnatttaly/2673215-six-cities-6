@@ -1,24 +1,27 @@
 import OffersList from '@components/offers-list/offers-list';
 import { SORT_OPTIONS } from 'consts';
-import { cityNames, Offer } from 'types';
+import { Offer } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import { useState } from 'react';
 import Map from '@components/map/map.js';
+import CitiesList from '@components/cities-list/cities-list';
+import { useAppDispatch, useAppSelector } from '@hooks/index.js';
+import { changeCity } from '@store/action';
 
-type MainPageProps = {
-  offers: Offer[];
-};
+function MainPage(): JSX.Element {
+  const currentCity = useAppSelector((state) => state.city);
+  const currentCityOffers = useAppSelector((state) =>
+    state.offers.filter((offer) => offer.city.name === currentCity.name)
+  );
 
-function MainPage({ offers }: MainPageProps): JSX.Element {
-  // ToDo: Пока Амстердам
-  const currentCity = offers[0].city;
-  // ToDo: Пока все офферы, потом будет фильтрация по выбранному городу
-  const currentOffers = offers;
+  const dispatch = useAppDispatch();
 
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
 
   const handleOfferHover = (offerId: string | null) => {
-    const offer = offerId ? offers.find((item) => item.id === offerId) : null;
+    const offer = offerId
+      ? currentCityOffers.find((item) => item.id === offerId)
+      : null;
     setSelectedOffer(offer || null);
   };
 
@@ -66,30 +69,18 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {cityNames.map((city) => (
-                <li className="locations__item" key={city}>
-                  <a
-                    className={`locations__item-link tabs__item ${
-                      city === 'Amsterdam' ? 'tabs__item--active' : ''
-                    }`}
-                    href={city === 'Amsterdam' ? undefined : '#'}
-                  >
-                    <span>{city}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        </div>
+        <CitiesList
+          currentCity={currentCity}
+          onCityChange={(city) => dispatch(changeCity(city))}
+        />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offers.length} places to stay in Amsterdam
+                {currentCityOffers.length}{' '}
+                {currentCityOffers.length === 1 ? 'place' : 'places'} to stay in{' '}
+                {currentCity.name}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
@@ -115,7 +106,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
               </form>
 
               <OffersList
-                offers={offers}
+                offers={currentCityOffers}
                 layoutType="cities"
                 onCardHover={handleOfferHover}
                 onCardLeave={() => setSelectedOffer(null)}
@@ -125,7 +116,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
               {currentCity && (
                 <Map
                   city={currentCity}
-                  offers={currentOffers}
+                  offers={currentCityOffers}
                   selectedOffer={selectedOffer}
                   className="cities"
                 />

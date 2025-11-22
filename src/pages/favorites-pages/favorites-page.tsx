@@ -1,12 +1,13 @@
 import PageHelmet from '@components/page-helmet/page-helmet.js';
-import { Offer, cityNames } from 'types';
 import OffersList from '@components/offers-list/offers-list.js';
+import { useAppSelector } from '@hooks/index.js';
+import { CITIES } from 'consts';
 
-type FavoritesPageProps = {
-  favoriteOffers: Offer[];
-};
+function FavoritesPage(): JSX.Element {
+  const favoriteOffers = useAppSelector((state) =>
+    state.offers.filter((offer) => offer.isFavorite)
+  );
 
-function FavoritesPage({ favoriteOffers }: FavoritesPageProps): JSX.Element {
   return (
     <div className="page">
       <PageHelmet />
@@ -56,23 +57,22 @@ function FavoritesPage({ favoriteOffers }: FavoritesPageProps): JSX.Element {
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {cityNames
-                .slice()
+              {CITIES.slice()
                 .reverse()
-                .map((city) => {
+                .map(({name: cityName}) => {
                   const cityOffers = favoriteOffers.filter(
-                    (offer) => offer.city.name === city
+                    (offer) => offer.city.name === cityName
                   );
                   if (cityOffers.length === 0) {
                     return null;
                   }
 
                   return (
-                    <li className="favorites__locations-items" key={city}>
+                    <li className="favorites__locations-items" key={cityName}>
                       <div className="favorites__locations locations locations--current">
                         <div className="locations__item">
                           <a className="locations__item-link" href="#">
-                            <span>{city}</span>
+                            <span>{cityName}</span>
                           </a>
                         </div>
                       </div>

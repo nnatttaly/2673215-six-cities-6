@@ -158,7 +158,7 @@ export const mockOffers: Offer[] = [
     isPremium: true,
     previewImage: 'markup/img/apartment-03.jpg',
     price: 180,
-    isFavorite: false,
+    isFavorite: true,
     rating: 1.6,
     title: 'Nice, cozy, warm big bed apartment',
     housingType: 'Apartment',
@@ -190,17 +190,17 @@ export const mockOffers: Offer[] = [
       'Fridge',
     ],
     city: {
-      name: 'Amsterdam',
+      name: 'Paris',
       coordinates: {
-        lat: 52.370216,
-        lng: 4.895168,
+        lat: 48.85661,
+        lng: 2.351499,
       },
       zoom: 12,
     },
     commentCount: 3,
     coordinates: {
-      lat: 52.3809553943508,
-      lng: 4.939309666406198,
+      lat: 48.85561,
+      lng: 2.351499,
     },
   },
 ];
