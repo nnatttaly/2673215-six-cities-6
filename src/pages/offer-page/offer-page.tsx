@@ -28,7 +28,7 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
     bedrooms,
     maxAdults,
     type,
-    goods: amenities,
+    goods,
     host,
     description,
     commentCount,
@@ -141,9 +141,9 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {amenities.map((amenity) => (
-                    <li key={amenity} className="offer__inside-item">
-                      {amenity}
+                  {goods.map((good) => (
+                    <li key={good} className="offer__inside-item">
+                      {good}
                     </li>
                   ))}
                 </ul>

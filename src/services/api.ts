@@ -1,7 +1,8 @@
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
-import {StatusCodes} from 'http-status-codes';
+import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { StatusCodes } from 'http-status-codes';
 import { BACKEND_URL, REQUEST_TIMEOUT } from 'consts';
-import {processErrorHandle} from './process-error-handle';
+import { getToken } from './token';
+import { processErrorHandle } from './process-error-handle';
 
 type DetailMessageType = {
   type: string;
@@ -21,6 +22,18 @@ export const createAPI = (): AxiosInstance => {
     baseURL: BACKEND_URL,
     timeout: REQUEST_TIMEOUT,
   });
+
+  api.interceptors.request.use(
+    (config: InternalAxiosRequestConfig) => {
+      const token = getToken();
+
+      if (token && config.headers) {
+        config.headers['x-token'] = token;
+      }
+
+      return config;
+    },
+  );
 
   api.interceptors.response.use(
     (response) => response,
