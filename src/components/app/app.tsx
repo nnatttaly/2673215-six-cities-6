@@ -1,28 +1,29 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from 'consts';
-import MainPage from '@pages/main-pages/main-page.tsx';
-import LoginPage from '@pages/login-pages/login-page.tsx';
-import FavoritesPage from '@pages/favorites-pages/favorites-page.tsx';
-import OfferPage from '@pages/offer-pages/offer-page.tsx';
-import NotFoundPage from '@pages/not-found-pages/not-found-page.tsx';
+import MainPage from '@pages/main-page/main-page';
+import LoginPage from '@pages/login-page/login-page';
+import FavoritesPage from '@pages/favorites-page/favorites-page';
+import OfferPage from '@pages/offer-page/offer-page';
+import NotFoundPage from '@pages/not-found-page/not-found-page';
 import PrivateRoute from '@components/private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { Offer, Review } from 'types';
-import { useAppDispatch } from '@hooks/index.js';
-import { fillOffers } from '@store/action';
-import { useEffect } from 'react';
+import { Offers, Review } from 'types';
+import { useAppSelector } from '../../hooks';
+import Spinner from '@components/loading/spinner';
 
 type AppScreenProps = {
-  offers: Offer[];
+  offers: Offers;
   reviews: Review[];
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
-  const dispatch = useAppDispatch();
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
-  useEffect(() => {
-    dispatch(fillOffers(offers));
-  }, [dispatch, offers]);
+  if (isOffersDataLoading) {
+    return (
+      <Spinner />
+    );
+  }
 
   return (
     <HelmetProvider>

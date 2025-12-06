@@ -1,6 +1,6 @@
 import { HousingType } from './housing-types.js';
 import { User } from './user.type.js';
-import { Coordinates } from './coordinates.type.js';
+import { Location } from './location.type.js';
 import { City } from './city.type.js';
 
 export type Offer = {
@@ -9,7 +9,7 @@ export type Offer = {
   isPremium: boolean;
   price: number;
   title: string;
-  housingType: HousingType;
+  type: HousingType;
   isFavorite: boolean;
   rating: number;
   images: string[];
@@ -17,8 +17,10 @@ export type Offer = {
   bedrooms: number;
   maxAdults: number;
   host: User;
-  amenities: string[];
+  goods: string[];
   city: City;
   commentCount: number;
-  coordinates: Coordinates;
+  location: Location;
 };
+
+export type Offers = Offer[];

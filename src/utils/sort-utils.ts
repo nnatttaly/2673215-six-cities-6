@@ -1,4 +1,4 @@
-import { Offer, SortOption } from 'types';
+import { Offer, Offers, SortOption } from 'types';
 
 export const getSortComparator = (
   sortOption: SortOption
@@ -14,6 +14,6 @@ export const getSortComparator = (
 };
 
 export const sortOffers = (
-  offers: Offer[],
+  offers: Offers,
   sortOption: SortOption
-): Offer[] => [...offers].sort(getSortComparator(sortOption));
+): Offers => [...offers].sort(getSortComparator(sortOption));

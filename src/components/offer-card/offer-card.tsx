@@ -22,7 +22,7 @@ function OfferCard({
     isPremium,
     price,
     title,
-    housingType,
+    type,
     isFavorite,
     rating,
   } = offer;
@@ -83,7 +83,7 @@ function OfferCard({
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">{housingType}</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );

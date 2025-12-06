@@ -1,6 +1,6 @@
-import { Offer } from 'types';
+import { Offers } from 'types';
 
-export const mockOffers: Offer[] = [
+export const mockOffers: Offers = [
   {
     id: '1',
     isPremium: true,
@@ -9,7 +9,7 @@ export const mockOffers: Offer[] = [
     isFavorite: false,
     rating: 4.8,
     title: 'Beautiful & luxurious apartment at great location',
-    housingType: 'Apartment',
+    type: 'Apartment',
     images: [
       'img/room.jpg',
       'img/apartment-01.jpg',
@@ -28,7 +28,7 @@ export const mockOffers: Offer[] = [
       avatarPath: 'img/avatar-angelina.jpg',
       isPro: true,
     },
-    amenities: [
+    goods: [
       'Wi-Fi',
       'Washing machine',
       'Towels',
@@ -42,16 +42,17 @@ export const mockOffers: Offer[] = [
     ],
     city: {
       name: 'Amsterdam',
-      coordinates: {
-        lat: 52.370216,
-        lng: 4.895168,
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 12,
       },
-      zoom: 12,
     },
     commentCount: 3,
-    coordinates: {
-      lat: 52.3909553943508,
-      lng: 4.85309666406198,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.85309666406198,
+      zoom: 12,
     },
   },
   {
@@ -62,7 +63,7 @@ export const mockOffers: Offer[] = [
     isFavorite: true,
     rating: 4.5,
     title: 'Wood and stone place',
-    housingType: 'Room',
+    type: 'Room',
     images: [
       'img/room.jpg',
       'img/apartment-01.jpg',
@@ -81,7 +82,7 @@ export const mockOffers: Offer[] = [
       avatarPath: 'img/avatar-angelina.jpg',
       isPro: true,
     },
-    amenities: [
+    goods: [
       'Wi-Fi',
       'Washing machine',
       'Towels',
@@ -92,16 +93,17 @@ export const mockOffers: Offer[] = [
     ],
     city: {
       name: 'Amsterdam',
-      coordinates: {
-        lat: 52.370216,
-        lng: 4.895168,
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 12,
       },
-      zoom: 12,
     },
     commentCount: 3,
-    coordinates: {
-      lat: 52.3609553943508,
-      lng: 4.85309666406198,
+    location: {
+      latitude: 52.3609553943508,
+      longitude: 4.85309666406198,
+      zoom: 12,
     },
   },
   {
@@ -112,7 +114,7 @@ export const mockOffers: Offer[] = [
     isFavorite: true,
     rating: 2,
     title: 'Canal View Prinsengracht',
-    housingType: 'Apartment',
+    type: 'Apartment',
     images: [
       'img/room.jpg',
       'img/apartment-01.jpg',
@@ -131,7 +133,7 @@ export const mockOffers: Offer[] = [
       avatarPath: 'img/avatar-angelina.jpg',
       isPro: true,
     },
-    amenities: [
+    goods: [
       'Wi-Fi',
       'Washing machine',
       'Kitchen',
@@ -141,16 +143,17 @@ export const mockOffers: Offer[] = [
     ],
     city: {
       name: 'Amsterdam',
-      coordinates: {
-        lat: 52.370216,
-        lng: 4.895168,
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 12,
       },
-      zoom: 12,
     },
     commentCount: 3,
-    coordinates: {
-      lat: 52.3909553943508,
-      lng: 4.929309666406198,
+    location: {
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
+      zoom: 12,
     },
   },
   {
@@ -161,7 +164,7 @@ export const mockOffers: Offer[] = [
     isFavorite: true,
     rating: 1.6,
     title: 'Nice, cozy, warm big bed apartment',
-    housingType: 'Apartment',
+    type: 'Apartment',
     images: [
       'img/room.jpg',
       'img/apartment-01.jpg',
@@ -180,7 +183,7 @@ export const mockOffers: Offer[] = [
       avatarPath: 'img/avatar-angelina.jpg',
       isPro: true,
     },
-    amenities: [
+    goods: [
       'Wi-Fi',
       'Washing machine',
       'Heating',
@@ -191,16 +194,17 @@ export const mockOffers: Offer[] = [
     ],
     city: {
       name: 'Paris',
-      coordinates: {
-        lat: 48.85661,
-        lng: 2.351499,
+      location: {
+        latitude: 48.85661,
+        longitude: 2.351499,
+        zoom: 12,
       },
-      zoom: 12,
     },
     commentCount: 3,
-    coordinates: {
-      lat: 48.85561,
-      lng: 2.351499,
+    location: {
+      latitude: 48.85561,
+      longitude: 2.351499,
+      zoom: 12,
     },
   },
 ];

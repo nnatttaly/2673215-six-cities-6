@@ -1,5 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
-import { City, Offer } from 'types';
+import { City, Offers } from 'types';
 
 export const changeCity = createAction<City>('city/changeCity');
-export const fillOffers = createAction<Offer[]>('offers/fillOffers');
+
+export const loadOffers = createAction<Offers>('offers/loadOffers');
+
+export const setOffersDataLoadingStatus = createAction<boolean>('data/setOffersDataLoadingStatus');
+
+export const setError = createAction<string | null>('game/setError');
