@@ -1,9 +1,9 @@
 import OfferCard from '../offer-card/offer-card';
-import { Offer, LayoutType } from 'types';
+import { Offers, LayoutType } from 'types';
 import { useState } from 'react';
 
 type OffersListProps = {
-  offers: Offer[];
+  offers: Offers;
   layoutType: LayoutType;
   onCardHover?: (offerId: string | null) => void;
   onCardLeave?: () => void;

@@ -1,22 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCity, fillOffers } from './action.js';
-import { City, Offer } from 'types';
+import { changeCity, loadOffers, setOffersDataLoadingStatus, setError } from './action.js';
+import { City, Offers } from 'types';
+import { DEFAULT_CITY } from 'consts';
 
 type State = {
   city: City;
-  offers: Offer[];
+  offers: Offers;
+  isOffersDataLoading: boolean;
+  error: string | null;
 };
 
 const initialState: State = {
-  city: {
-    name: 'Paris',
-    coordinates: {
-      lat: 48.85661,
-      lng: 2.351499,
-    },
-    zoom: 13,
-  },
+  city: DEFAULT_CITY,
   offers: [],
+  isOffersDataLoading: false,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -24,8 +22,14 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(fillOffers, (state, action) => {
+    .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 

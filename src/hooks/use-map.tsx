@@ -9,14 +9,16 @@ function useMap(
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef<boolean>(false);
 
+  const { latitude, longitude, zoom } = city.location;
+
   useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {
         center: {
-          lat: city.coordinates.lat,
-          lng: city.coordinates.lng,
+          lat: latitude,
+          lng: longitude,
         },
-        zoom: city.zoom,
+        zoom: zoom,
       });
 
       leaflet
@@ -32,13 +34,13 @@ function useMap(
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, city]);
+  }, [mapRef, latitude, longitude, zoom]);
 
   useEffect(() => {
     if (map) {
-      map.setView([city.coordinates.lat, city.coordinates.lng], city.zoom);
+      map.setView([latitude, longitude], zoom);
     }
-  }, [map, city]);
+  }, [map, latitude, longitude, zoom]);
 
   return map;
 }

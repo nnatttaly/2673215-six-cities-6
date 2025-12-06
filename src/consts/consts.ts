@@ -1,4 +1,5 @@
 import { SortOption } from 'types';
+import { CITIES } from './cities';
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',
@@ -15,6 +16,7 @@ export const RATINGS = [
 ] as const;
 
 export const DEFAULT_SORT_OPTION: SortOption = 'Popular';
+export const DEFAULT_CITY = CITIES[0];
 
 export const MAX_RATING = 5 as const;
 export const IMAGES_LIMIT = 6 as const;
@@ -25,3 +27,8 @@ export const NEARBY_OFFERS_LIMIT = 3;
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
+
+export const BACKEND_URL = 'https://14.design.htmlacademy.pro/six-cities';
+export const REQUEST_TIMEOUT = 5000;
+
+export const TIMEOUT_SHOW_ERROR = 2000;

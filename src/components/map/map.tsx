@@ -1,13 +1,13 @@
 import { useRef, useEffect } from 'react';
 import leaflet from 'leaflet';
 import useMap from '@hooks/use-map';
-import { City, Offer } from 'types';
+import { City, Offer, Offers } from 'types';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from 'consts';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   city: City;
-  offers: Offer[];
+  offers: Offers;
   selectedOffer?: Offer | null;
   className: string;
 };
@@ -39,8 +39,8 @@ function Map({
 
       offers.forEach((offer) => {
         const marker = leaflet.marker({
-          lat: offer.coordinates.lat,
-          lng: offer.coordinates.lng,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker

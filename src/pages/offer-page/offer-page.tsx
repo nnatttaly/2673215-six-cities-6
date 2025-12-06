@@ -1,4 +1,4 @@
-import { Offer, Review } from 'types';
+import { Offer, Offers, Review } from 'types';
 import OffersList from '@components/offers-list/offers-list.js';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import ReviewsList from '@components/reviews-list/reviews-list';
@@ -15,7 +15,7 @@ import {
 type OfferPage = {
   offer: Offer;
   reviews: Review[];
-  nearbyOffers: Offer[];
+  nearbyOffers: Offers;
 };
 
 function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
@@ -27,8 +27,8 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
     images,
     bedrooms,
     maxAdults,
-    housingType,
-    amenities,
+    type,
+    goods: amenities,
     host,
     description,
     commentCount,
@@ -125,7 +125,7 @@ function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
               <Rating rating={rating} className="offer" showValue />
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {housingType}
+                  {type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
                   {bedrooms} {getPluralWord(bedrooms, 'Bedroom', 'Bedrooms')}

@@ -1,7 +1,6 @@
-import { Coordinates } from './coordinates.type.js';
+import { Location } from './location.type.js';
 
 export type City = {
   name: string;
-  coordinates: Coordinates;
-  zoom: number;
+  location: Location;
 };
