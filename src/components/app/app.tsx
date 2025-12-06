@@ -17,9 +17,10 @@ type AppScreenProps = {
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
-  if (isOffersDataLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
       <Spinner />
     );
@@ -34,7 +35,7 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <PrivateRoute>
                 <FavoritesPage />
               </PrivateRoute>
             }
