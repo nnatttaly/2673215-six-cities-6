@@ -1,4 +1,5 @@
 import { MAX_RATING } from 'consts';
+import { useMemo } from 'react';
 
 type RatingProps = {
   rating: number;
@@ -11,7 +12,10 @@ function Rating({
   className,
   showValue = false,
 }: RatingProps): JSX.Element {
-  const ratingWidth = `${(Math.round(rating) / MAX_RATING) * 100}%`;
+  const ratingWidth = useMemo(() =>
+    `${(Math.round(rating) / MAX_RATING) * 100}%`,
+  [rating]
+  );
 
   return (
     <div className={`${className}__rating rating`}>

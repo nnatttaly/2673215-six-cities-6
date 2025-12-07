@@ -1,4 +1,5 @@
 import { CITIES } from 'consts';
+import { useCallback } from 'react';
 import { City } from 'types';
 
 type CitiesListProps = {
@@ -10,6 +11,12 @@ function CitiesList({
   currentCity,
   onCityChange,
 }: CitiesListProps): JSX.Element {
+
+  const handleCityClick = useCallback((city: City) => (evt: React.MouseEvent) => {
+    evt.preventDefault();
+    onCityChange(city);
+  }, [onCityChange]);
+
   return (
     <div className="tabs">
       <section className="locations container">
@@ -21,10 +28,7 @@ function CitiesList({
                   city.name === currentCity.name ? 'tabs__item--active' : ''
                 }`}
                 href="#"
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  onCityChange(city);
-                }}
+                onClick={handleCityClick(city)}
               >
                 <span>{city.name}</span>
               </a>

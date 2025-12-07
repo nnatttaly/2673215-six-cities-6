@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Offer, LayoutType } from 'types';
 import Rating from '@components/rating/rating.js';
 import { OFFER_CARD_IMAGE_SIZE, PLACE_CARD_BOOKMARK_ICON_SIZE } from 'consts';
+import { useCallback } from 'react';
 
 type OfferCardProps = {
   offer: Offer;
@@ -27,34 +28,45 @@ function OfferCard({
     rating,
   } = offer;
 
-  const { width, height } = OFFER_CARD_IMAGE_SIZE[layoutType];
+  const handleMouseEnter = useCallback(() => {
+    onCardHover(id);
+  }, [onCardHover, id]);
+
+  const handleMouseLeave = useCallback(() => {
+    onCardLeave();
+  }, [onCardLeave]);
+
+  const imageSize = OFFER_CARD_IMAGE_SIZE[layoutType];
+  const imageWrapperClass = `${layoutType}__image-wrapper place-card__image-wrapper`;
+  const bookmarkButtonClass = `place-card__bookmark-button ${
+    isFavorite ? 'place-card__bookmark-button--active' : ''
+  } button`;
 
   return (
     <article
       className={`${layoutType}__card place-card`}
-      onMouseEnter={() => onCardHover(id)}
-      onMouseLeave={onCardLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className={`${layoutType}__image-wrapper place-card__image-wrapper`}>
+      <div className={imageWrapperClass}>
         <Link to={`/offer/${id}`}>
           <img
             className="place-card__image"
             src={previewImage}
-            width={width}
-            height={height}
+            width={imageSize.width}
+            height={imageSize.height}
             alt="Place image"
           />
         </Link>
       </div>
-      <div
-        className={`${
-          layoutType === 'favorites' ? 'favorites__card-info ' : ''
-        }place-card__info`}
+      <div className={`${
+        layoutType === 'favorites' ? 'favorites__card-info ' : ''
+      }place-card__info`}
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
@@ -62,9 +74,7 @@ function OfferCard({
             <span className="place-card__price-text"> &#47;&nbsp;night</span>
           </div>
           <button
-            className={`place-card__bookmark-button ${
-              isFavorite ? 'place-card__bookmark-button--active' : ''
-            } button`}
+            className={bookmarkButtonClass}
             type="button"
           >
             <svg

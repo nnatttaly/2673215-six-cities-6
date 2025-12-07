@@ -2,6 +2,7 @@ import { Review } from 'types';
 import ReviewItem from '@components/review-item/review-item.js';
 import ReviewForm from '@components/review-form/review-form.js';
 import { REVIEWS_LIMIT } from 'consts';
+import { useMemo } from 'react';
 
 type ReviewsListProps = {
   commentCount: number;
@@ -9,9 +10,12 @@ type ReviewsListProps = {
 };
 
 function ReviewsList({ commentCount, reviews }: ReviewsListProps): JSX.Element {
-  const sortedAndLimitedReviews = reviews
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
-    .slice(0, REVIEWS_LIMIT);
+  const sortedAndLimitedReviews = useMemo(() =>
+    reviews
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .slice(0, REVIEWS_LIMIT),
+  [reviews]
+  );
 
   return (
     <section className="offer__reviews reviews">

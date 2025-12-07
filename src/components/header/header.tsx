@@ -2,21 +2,29 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { AppRoute, AuthorizationStatus, LOGO_SIZE } from 'consts';
 import { logoutAction } from '@store/api-actions';
+import { useCallback, useMemo } from 'react';
 
 type HeaderProps = {
   showNavigation?: boolean;
 }
 
 function Header({ showNavigation = true }: HeaderProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
-  const userData = useAppSelector((state) => state.userData);
+  const { authorizationStatus, userData } = useAppSelector((state) => ({
+    authorizationStatus: state.authorizationStatus,
+    userData: state.userData,
+  }));
+
   const dispatch = useAppDispatch();
 
-  const handleLogoutClick = (e: React.MouseEvent) => {
+  const handleLogoutClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     dispatch(logoutAction());
-  };
+  }, [dispatch]);
+
+  const isAuth = useMemo(() =>
+    authorizationStatus === AuthorizationStatus.Auth,
+  [authorizationStatus]
+  );
 
   return (
     <header className="header">

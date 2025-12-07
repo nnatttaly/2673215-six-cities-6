@@ -1,6 +1,7 @@
 import { Review } from 'types';
 import { REVIEWS_AVATAR_SIZE } from 'consts';
 import Rating from '@components/rating/rating.js';
+import { useMemo } from 'react';
 
 type ReviewItemProps = {
   review: Review;
@@ -9,11 +10,13 @@ type ReviewItemProps = {
 function ReviewItem({ review }: ReviewItemProps): JSX.Element {
   const { user, rating, comment, date } = review;
 
-  const formatDate = (dateValue: Date): string =>
-    dateValue.toLocaleDateString('en-US', {
+  const formattedDate = useMemo(() =>
+    date.toLocaleDateString('en-US', {
       month: 'long',
       year: 'numeric',
-    });
+    }),
+  [date]
+  );
 
   return (
     <li className="reviews__item">
@@ -33,7 +36,7 @@ function ReviewItem({ review }: ReviewItemProps): JSX.Element {
         <Rating rating={rating} className="reviews" />
         <p className="reviews__text">{comment}</p>
         <time className="reviews__time" dateTime={date.toISOString()}>
-          {formatDate(date)}
+          {formattedDate}
         </time>
       </div>
     </li>

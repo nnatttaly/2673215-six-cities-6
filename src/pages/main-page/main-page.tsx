@@ -1,7 +1,7 @@
 import OffersList from '@components/offers-list/offers-list';
 import { Offer, SortOption } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Map from '@components/map/map.js';
 import CitiesList from '@components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '@hooks/index.js';
@@ -14,27 +14,30 @@ import Header from '@components/header/header';
 
 function MainPage(): JSX.Element {
   const currentCity = useAppSelector((state) => state.city);
-  const currentCityOffers = useAppSelector((state) =>
-    state.offers.filter((offer) => offer.city.name === currentCity.name)
-  );
+  const currentCityOffers = useAppSelector((state) => {
+    const cityName = state.city.name;
+    return state.offers.filter((offer) => offer.city.name === cityName);
+  });
 
   const dispatch = useAppDispatch();
 
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
-  const [currentSort, setCurrentSort] =
-    useState<SortOption>(DEFAULT_SORT_OPTION);
-  const sortedOffers = sortOffers(currentCityOffers, currentSort);
+  const [currentSort, setCurrentSort] = useState<SortOption>(DEFAULT_SORT_OPTION);
+  const sortedOffers = useMemo(
+    () => sortOffers(currentCityOffers, currentSort),
+    [currentCityOffers, currentSort]
+  );
 
-  const handleOfferHover = (offerId: string | null) => {
+  const handleOfferHover = useCallback((offerId: string | null) => {
     const offer = offerId
       ? currentCityOffers.find((item) => item.id === offerId)
       : null;
     setSelectedOffer(offer || null);
-  };
+  }, [currentCityOffers]);
 
-  const handleSortChange = (sortOption: SortOption) => {
+  const handleSortChange = useCallback((sortOption: SortOption) => {
     setCurrentSort(sortOption);
-  };
+  }, []);
 
   return (
     <div className="page page--gray page--main">
