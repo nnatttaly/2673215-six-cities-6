@@ -11,13 +11,16 @@ import { sortOffers } from '@utils/sort-utils';
 import SortOptions from '@components/sort-options/sort-options';
 import { DEFAULT_SORT_OPTION } from 'consts';
 import Header from '@components/header/header';
+import { getCity, getOffers } from '@store/data-process/selectors';
 
 function MainPage(): JSX.Element {
-  const currentCity = useAppSelector((state) => state.city);
-  const currentCityOffers = useAppSelector((state) => {
-    const cityName = state.city.name;
-    return state.offers.filter((offer) => offer.city.name === cityName);
-  });
+  const currentCity = useAppSelector(getCity);
+  const allOffers = useAppSelector(getOffers);
+
+  const currentCityOffers = useMemo(() => {
+    const cityName = currentCity.name;
+    return allOffers.filter((offer) => offer.city.name === cityName);
+  }, [allOffers, currentCity]);
 
   const dispatch = useAppDispatch();
 
