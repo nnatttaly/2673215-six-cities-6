@@ -10,6 +10,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Offers, Review } from 'types';
 import { useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
+import { getAuthorizationStatus, getAuthCheckedStatus } from '@store/user-process/selectors';
+import { getOffersDataLoadingStatus } from '@store/data-process/selectors';
 
 type AppScreenProps = {
   offers: Offers;
@@ -17,13 +19,12 @@ type AppScreenProps = {
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return (
-      <Spinner />
-    );
+  if (!isAuthChecked || isOffersDataLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -31,11 +32,20 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Main} element={<MainPage />} />
-          <Route path={AppRoute.Login} element={<LoginPage />} />
+          <Route
+            path={AppRoute.Login}
+            element={
+              authorizationStatus === AuthorizationStatus.Auth ? (
+                <MainPage />
+              ) : (
+                <LoginPage />
+              )
+            }
+          />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute>
+              <PrivateRoute >
                 <FavoritesPage />
               </PrivateRoute>
             }
