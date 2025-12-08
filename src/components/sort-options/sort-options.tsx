@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { SORT_OPTIONS, SortOption } from 'types';
 import { SORTING_ARROW_SIZE } from 'consts';
 
@@ -13,14 +13,14 @@ function SortOptions({
 }: SortOptionsProps): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSortClick = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+  const handleSortClick = () => {
+    setIsOpen(!isOpen);
+  };
 
-  const handleOptionClick = useCallback((option: SortOption) => {
+  const handleOptionClick = (option: SortOption) => {
     onSortChange(option);
     setIsOpen(false);
-  }, [onSortChange]);
+  };
 
   return (
     <form className="places__sorting" action="#" method="get">

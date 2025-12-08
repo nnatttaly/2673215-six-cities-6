@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { AppRoute, LOGO_SIZE, AuthorizationStatus } from 'consts';
 import { logoutAction } from '@store/api-actions';
-import { useCallback } from 'react';
 import { getAuthorizationStatus, getUserData } from '@store/user-process/selectors';
 
 type HeaderProps = {
@@ -17,10 +16,10 @@ function Header({ showNavigation = true }: HeaderProps): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const handleLogoutClick = useCallback((e: React.MouseEvent) => {
+  const handleLogoutClick = (e: React.MouseEvent) => {
     e.preventDefault();
     dispatch(logoutAction());
-  }, [dispatch]);
+  };
 
   return (
     <header className="header">

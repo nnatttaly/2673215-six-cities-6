@@ -1,10 +1,10 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import React from 'react';
 import {
   MIN_COMMENT_LENGTH,
   MAX_COMMENT_LENGTH,
   RATINGS,
-} from '../../consts';
+} from 'consts';
 import RatingStar from '@components/rating-star/rating-star';
 
 function ReviewForm(): JSX.Element {
@@ -13,25 +13,23 @@ function ReviewForm(): JSX.Element {
     comment: '',
   });
 
-  const handleRatingChange = useCallback((value: number) => {
-    setReviewData((prev) => ({ ...prev, rating: value }));
-  }, []);
+  const handleRatingChange = (value: number) => {
+    setReviewData({ ...reviewData, rating: value });
+  };
 
-  const handleCommentChange = useCallback((evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReviewData((prev) => ({ ...prev, comment: evt.target.value }));
-  }, []);
+  const handleCommentChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReviewData({ ...reviewData, comment: evt.target.value });
+  };
 
-  const isSubmitDisabled = useMemo(() =>
+  const isSubmitDisabled =
     reviewData.rating === 0 ||
     reviewData.comment.length < MIN_COMMENT_LENGTH ||
-    reviewData.comment.length > MAX_COMMENT_LENGTH,
-  [reviewData.rating, reviewData.comment]
-  );
+    reviewData.comment.length > MAX_COMMENT_LENGTH;
 
-  const handleSubmit = useCallback((event: React.FormEvent) => {
+  function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setReviewData({ rating: 0, comment: '' });
-  }, []);
+  }
 
   return (
     <form

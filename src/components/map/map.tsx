@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo } from 'react';
+import { useRef, useEffect } from 'react';
 import leaflet from 'leaflet';
 import useMap from '@hooks/use-map';
 import { City, Offer, Offers } from 'types';
@@ -12,24 +12,24 @@ type MapProps = {
   className: string;
 };
 
+const defaultCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
+const currentCustomIcon = leaflet.icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 function Map({
   city,
   offers,
   selectedOffer,
   className,
 }: MapProps): JSX.Element {
-  const defaultCustomIcon = useMemo(() => leaflet.icon({
-    iconUrl: URL_MARKER_DEFAULT,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  }), []);
-
-  const currentCustomIcon = useMemo(() => leaflet.icon({
-    iconUrl: URL_MARKER_CURRENT,
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  }), []);
-
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -56,7 +56,7 @@ function Map({
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, selectedOffer, selectedOffer?.id, defaultCustomIcon, currentCustomIcon]);
+  }, [map, offers, selectedOffer]);
 
   return <div className={`${className}__map map`} ref={mapRef} />;
 }

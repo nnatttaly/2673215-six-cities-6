@@ -1,6 +1,6 @@
 import OfferCard from '../offer-card/offer-card';
 import { Offers, LayoutType } from 'types';
-import { useCallback, useMemo } from 'react';
+import { useState } from 'react';
 
 type OffersListProps = {
   offers: Offers;
@@ -15,23 +15,22 @@ function OffersList({
   onCardHover,
   onCardLeave,
 }: OffersListProps): JSX.Element {
+  const [, setActiveOfferId] = useState<string | null>(null);
+  const listClass = {
+    cities: 'cities__places-list places__list tabs__content',
+    favorites: 'favorites__places',
+    'near-places': 'near-places__list places__list',
+  }[layoutType];
 
-  const handleCardHover = useCallback((offerId: string | null) => {
+  const handleCardHover = (offerId: string | null) => {
+    setActiveOfferId(offerId);
     onCardHover?.(offerId);
-  }, [onCardHover]);
+  };
 
-  const handleCardLeave = useCallback(() => {
+  const handleCardLeave = () => {
+    setActiveOfferId(null);
     onCardLeave?.();
-  }, [onCardLeave]);
-
-  const listClass = useMemo(() =>
-    ({
-      cities: 'cities__places-list places__list tabs__content',
-      favorites: 'favorites__places',
-      'near-places': 'near-places__list places__list',
-    }[layoutType]),
-  [layoutType]
-  );
+  };
 
   return (
     <div className={listClass}>

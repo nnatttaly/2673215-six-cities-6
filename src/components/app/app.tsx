@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from 'consts';
+import { AppRoute } from 'consts';
 import MainPage from '@pages/main-page/main-page';
 import LoginPage from '@pages/login-page/login-page';
 import FavoritesPage from '@pages/favorites-page/favorites-page';
@@ -10,7 +10,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Offers, Review } from 'types';
 import { useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
-import { getAuthorizationStatus, getAuthCheckedStatus } from '@store/user-process/selectors';
+import { getAuthCheckedStatus } from '@store/user-process/selectors';
 import { getOffersDataLoadingStatus } from '@store/data-process/selectors';
 
 type AppScreenProps = {
@@ -19,7 +19,6 @@ type AppScreenProps = {
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
@@ -32,20 +31,11 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
       <BrowserRouter>
         <Routes>
           <Route path={AppRoute.Main} element={<MainPage />} />
-          <Route
-            path={AppRoute.Login}
-            element={
-              authorizationStatus === AuthorizationStatus.Auth ? (
-                <MainPage />
-              ) : (
-                <LoginPage />
-              )
-            }
-          />
+          <Route path={AppRoute.Login} element={<LoginPage />} />
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute >
+              <PrivateRoute>
                 <FavoritesPage />
               </PrivateRoute>
             }

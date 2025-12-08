@@ -1,7 +1,7 @@
 import OffersList from '@components/offers-list/offers-list';
 import { Offer, SortOption } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Map from '@components/map/map.js';
 import CitiesList from '@components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '@hooks/index.js';
@@ -31,16 +31,16 @@ function MainPage(): JSX.Element {
     [currentCityOffers, currentSort]
   );
 
-  const handleOfferHover = useCallback((offerId: string | null) => {
+  const handleOfferHover = (offerId: string | null) => {
     const offer = offerId
       ? currentCityOffers.find((item) => item.id === offerId)
       : null;
     setSelectedOffer(offer || null);
-  }, [currentCityOffers]);
+  };
 
-  const handleSortChange = useCallback((sortOption: SortOption) => {
+  const handleSortChange = (sortOption: SortOption) => {
     setCurrentSort(sortOption);
-  }, []);
+  };
 
   return (
     <div className="page page--gray page--main">
