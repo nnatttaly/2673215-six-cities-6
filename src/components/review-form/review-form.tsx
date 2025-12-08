@@ -4,8 +4,8 @@ import {
   MIN_COMMENT_LENGTH,
   MAX_COMMENT_LENGTH,
   RATINGS,
-  FORM_STAR_IMAGE_SIZE,
-} from '../../consts';
+} from 'consts';
+import RatingStar from '@components/rating-star/rating-star';
 
 function ReviewForm(): JSX.Element {
   const [reviewData, setReviewData] = useState({
@@ -43,30 +43,13 @@ function ReviewForm(): JSX.Element {
       </label>
       <div className="reviews__rating-form form__rating">
         {RATINGS.map(({ value, title }) => (
-          <React.Fragment key={value}>
-            <input
-              className="form__rating-input visually-hidden"
-              name="rating"
-              value={value}
-              id={`${value}-stars`}
-              type="radio"
-              checked={reviewData.rating === value}
-              onChange={() => handleRatingChange(value)}
-            />
-            <label
-              htmlFor={`${value}-stars`}
-              className="reviews__rating-label form__rating-label"
-              title={title}
-            >
-              <svg
-                className="form__star-image"
-                width={FORM_STAR_IMAGE_SIZE.width}
-                height={FORM_STAR_IMAGE_SIZE.height}
-              >
-                <use xlinkHref="#icon-star"></use>
-              </svg>
-            </label>
-          </React.Fragment>
+          <RatingStar
+            key={value}
+            value={value}
+            title={title}
+            isChecked={reviewData.rating === value}
+            onChange={handleRatingChange}
+          />
         ))}
       </div>
       <textarea

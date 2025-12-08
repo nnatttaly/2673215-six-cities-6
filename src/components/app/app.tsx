@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from 'consts';
+import { AppRoute } from 'consts';
 import MainPage from '@pages/main-page/main-page';
 import LoginPage from '@pages/login-page/login-page';
 import FavoritesPage from '@pages/favorites-page/favorites-page';
@@ -10,6 +10,8 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Offers, Review } from 'types';
 import { useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
+import { getAuthCheckedStatus } from '@store/user-process/selectors';
+import { getOffersDataLoadingStatus } from '@store/data-process/selectors';
 
 type AppScreenProps = {
   offers: Offers;
@@ -17,13 +19,11 @@ type AppScreenProps = {
 };
 
 function App({ offers, reviews }: AppScreenProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
-    return (
-      <Spinner />
-    );
+  if (!isAuthChecked || isOffersDataLoading) {
+    return <Spinner />;
   }
 
   return (

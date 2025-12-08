@@ -1,16 +1,19 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { AppRoute, AuthorizationStatus, LOGO_SIZE } from 'consts';
+import { AppRoute, LOGO_SIZE, AuthorizationStatus } from 'consts';
 import { logoutAction } from '@store/api-actions';
+import { getAuthorizationStatus, getUserData } from '@store/user-process/selectors';
 
 type HeaderProps = {
   showNavigation?: boolean;
-}
+};
 
 function Header({ showNavigation = true }: HeaderProps): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const userData = useAppSelector(getUserData);
+
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
-  const userData = useAppSelector((state) => state.userData);
+
   const dispatch = useAppDispatch();
 
   const handleLogoutClick = (e: React.MouseEvent) => {

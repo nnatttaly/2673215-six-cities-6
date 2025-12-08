@@ -1,10 +1,11 @@
 import PageHelmet from '@components/page-helmet/page-helmet.js';
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { loginAction } from '@store/api-actions';
 import { AppRoute, AuthorizationStatus } from 'consts';
 import Header from '@components/header/header';
+import { getAuthorizationStatus } from '@store/user-process/selectors';
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -12,11 +13,13 @@ function LoginPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    navigate(AppRoute.Main);
-  }
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Main);
+    }
+  }, [authorizationStatus, navigate]);
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -37,7 +40,6 @@ function LoginPage(): JSX.Element {
       }
 
       dispatch(loginAction({ email, password }));
-      navigate(AppRoute.Main);
     }
   };
 
