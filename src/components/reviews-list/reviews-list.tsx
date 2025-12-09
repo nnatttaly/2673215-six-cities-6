@@ -5,22 +5,22 @@ import { REVIEWS_LIMIT } from 'consts';
 import { useMemo } from 'react';
 
 type ReviewsListProps = {
-  commentCount: number;
   reviews: Review[];
 };
 
-function ReviewsList({ commentCount, reviews }: ReviewsListProps): JSX.Element {
-  const sortedAndLimitedReviews = useMemo(() =>
-    reviews
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
-      .slice(0, REVIEWS_LIMIT),
-  [reviews]
-  );
+function ReviewsList({ reviews }: ReviewsListProps): JSX.Element {
+  const sortedAndLimitedReviews = useMemo(() => {
+    const reviewsCopy = [...reviews];
+
+    return reviewsCopy
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, REVIEWS_LIMIT);
+  }, [reviews]);
 
   return (
     <section className="offer__reviews reviews">
       <h2 className="reviews__title">
-        Reviews &middot; <span className="reviews__amount">{commentCount}</span>
+        Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
       </h2>
       <ul className="reviews__list">
         {sortedAndLimitedReviews.map((review) => (

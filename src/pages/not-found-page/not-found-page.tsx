@@ -1,6 +1,7 @@
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'consts';
+import './not-found-page.css';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -8,8 +9,10 @@ function NotFoundPage(): JSX.Element {
       <PageHelmet />
       <div>
         <h1>404 Not Found</h1>
-        <p>Кажется, кто-то съел эту страницу</p>
-        <Link to={AppRoute.Main}>Вернуться на главную</Link>
+        <p>Кажется, кто-то съел эту страницу (((</p>
+        <Link to={AppRoute.Main} className="back-link">
+          Вернуться на главную
+        </Link>
       </div>
     </div>
   );

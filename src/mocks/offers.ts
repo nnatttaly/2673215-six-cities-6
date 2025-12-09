@@ -25,7 +25,7 @@ export const mockOffers: Offers = [
     host: {
       name: 'Angelina',
       email: 'Angelina.conner@gmail.com',
-      avatarPath: 'img/avatar-angelina.jpg',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
     },
     goods: [
@@ -79,7 +79,7 @@ export const mockOffers: Offers = [
     host: {
       name: 'Angelina',
       email: 'Angelina.conner@gmail.com',
-      avatarPath: 'img/avatar-angelina.jpg',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
     },
     goods: [
@@ -130,7 +130,7 @@ export const mockOffers: Offers = [
     host: {
       name: 'Angelina',
       email: 'Angelina.conner@gmail.com',
-      avatarPath: 'img/avatar-angelina.jpg',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
     },
     goods: [
@@ -180,7 +180,7 @@ export const mockOffers: Offers = [
     host: {
       name: 'Angelina',
       email: 'Angelina.conner@gmail.com',
-      avatarPath: 'img/avatar-angelina.jpg',
+      avatarUrl: 'img/avatar-angelina.jpg',
       isPro: true,
     },
     goods: [

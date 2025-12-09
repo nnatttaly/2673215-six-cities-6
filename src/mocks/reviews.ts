@@ -6,7 +6,7 @@ export const mockReviews: Review[] = [
     user: {
       name: 'Max',
       email: 'Max.conner@gmail.com',
-      avatarPath: 'img/avatar-max.jpg',
+      avatarUrl: 'img/avatar-max.jpg',
       isPro: true,
     },
     rating: 4.5,
@@ -19,7 +19,7 @@ export const mockReviews: Review[] = [
     user: {
       name: 'Max',
       email: 'Max.conner@gmail.com',
-      avatarPath: 'img/avatar-max.jpg',
+      avatarUrl: 'img/avatar-max.jpg',
       isPro: true,
     },
     rating: 2.3,
@@ -32,7 +32,7 @@ export const mockReviews: Review[] = [
     user: {
       name: 'Max',
       email: 'Max.conner@gmail.com',
-      avatarPath: 'img/avatar-max.jpg',
+      avatarUrl: 'img/avatar-max.jpg',
       isPro: true,
     },
     rating: 5,

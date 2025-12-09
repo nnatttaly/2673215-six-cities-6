@@ -39,4 +39,5 @@ export const NameSpace = {
   Data: 'DATA',
   User: 'USER',
   App: 'APP',
+  Offer: 'OFFER',
 } as const;
