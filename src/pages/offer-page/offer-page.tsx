@@ -1,192 +1,117 @@
-import { Offer, Offers, Review } from 'types';
+import { useEffect } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
 import OffersList from '@components/offers-list/offers-list.js';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import ReviewsList from '@components/reviews-list/reviews-list';
-import Rating from '@components/rating/rating.js';
+import OfferGallery from '@components/offer-gallery/offer-gallery';
+import OfferHeader from '@components/offer-header/offer-header';
+import OfferGoods from '@components/offer-goods/offer-goods';
+import OfferHost from '@components/offer-host/offer-host';
 import Map from '@components/map/map.js';
-import { getPluralWord } from '@utils/word-utils';
 import {
-  IMAGES_LIMIT,
-  OFFER_BOOKMARK_ICON_SIZE,
-  HOST_AVATAR_SIZE,
   NEARBY_OFFERS_LIMIT,
+  AppRoute,
 } from 'consts';
+import Header from '@components/header/header';
+import { fetchOfferAction, fetchNearbyOffersAction, fetchReviewsAction } from '@store/api-actions';
+import { clearOfferData } from '@store/offer-process/offer-process';
+import {
+  getCurrentOffer,
+  getNearbyOffers,
+  getReviews,
+  getOfferDataLoadingStatus,
+  getOfferError,
+  getRequestedOfferId,
+} from '@store/offer-process/selectors';
+import Spinner from '@components/loading/spinner';
 
-type OfferPage = {
-  offer: Offer;
-  reviews: Review[];
-  nearbyOffers: Offers;
-};
+function OfferPage(): JSX.Element {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
 
-function OfferPage({ offer, reviews, nearbyOffers }: OfferPage): JSX.Element {
+  const currentOffer = useAppSelector(getCurrentOffer);
+  const requestedOfferId = useAppSelector(getRequestedOfferId);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const reviews = useAppSelector(getReviews);
+
+  const isOfferLoading = useAppSelector(getOfferDataLoadingStatus);
+  const error = useAppSelector(getOfferError);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchOfferAction(id));
+      dispatch(fetchNearbyOffersAction(id));
+      dispatch(fetchReviewsAction(id));
+    }
+
+    return () => {
+      dispatch(clearOfferData());
+    };
+  }, [dispatch, id]);
+
+
+  if (!id) {
+    return <Navigate to={AppRoute.NotFound} replace />;
+  }
+
+  if (requestedOfferId !== id || isOfferLoading) {
+    return <Spinner />;
+  }
+
+  if (!currentOffer || error) {
+    return <Navigate to={AppRoute.NotFound} replace />;
+  }
+
   const {
-    title,
-    isPremium,
-    price,
-    rating,
-    images,
-    bedrooms,
-    maxAdults,
-    type,
-    goods,
-    host,
-    description,
-    commentCount,
-    isFavorite,
-  } = offer;
+    title, isPremium, price, rating, images, bedrooms, maxAdults,
+    type, goods, host, description, isFavorite, city
+  } = currentOffer;
 
   const nearbyOffersToShow = nearbyOffers.slice(0, NEARBY_OFFERS_LIMIT);
-  const mapOffers = [offer, ...nearbyOffersToShow];
+  const mapOffers = [currentOffer, ...nearbyOffersToShow];
 
   return (
     <div className="page">
       <PageHelmet />
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <a className="header__logo-link" href="main.html">
-                <img
-                  className="header__logo"
-                  src="img/logo.svg"
-                  alt="6 cities logo"
-                  width={81}
-                  height={41}
-                />
-              </a>
-            </div>
-            <nav className="header__nav">
-              <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a
-                    className="header__nav-link header__nav-link--profile"
-                    href="#"
-                  >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                    <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
-                    </span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       <main className="page__main page__main--offer">
         <section className="offer">
-          <div className="offer__gallery-container container">
-            <div className="offer__gallery">
-              {images.slice(0, IMAGES_LIMIT).map((image, index) => (
-                <div key={image} className="offer__image-wrapper">
-                  <img
-                    className="offer__image"
-                    src={image}
-                    alt={`Photo ${index + 1}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+
+          <OfferGallery images={images} />
+
           <div className="offer__container container">
             <div className="offer__wrapper">
-              {isPremium && (
-                <div className="offer__mark">
-                  <span>Premium</span>
-                </div>
-              )}
-              <div className="offer__name-wrapper">
-                <h1 className="offer__name">{title}</h1>
-                <button
-                  className={`offer__bookmark-button ${
-                    isFavorite ? 'offer__bookmark-button--active' : ''
-                  } button`}
-                  type="button"
-                >
-                  <svg
-                    className="offer__bookmark-icon"
-                    width={OFFER_BOOKMARK_ICON_SIZE.width}
-                    height={OFFER_BOOKMARK_ICON_SIZE.height}
-                  >
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">
-                    {isFavorite ? 'In' : 'To'} bookmarks
-                  </span>
-                </button>
-              </div>
-              <Rating rating={rating} className="offer" showValue />
-              <ul className="offer__features">
-                <li className="offer__feature offer__feature--entire">
-                  {type}
-                </li>
-                <li className="offer__feature offer__feature--bedrooms">
-                  {bedrooms} {getPluralWord(bedrooms, 'Bedroom', 'Bedrooms')}
-                </li>
-                <li className="offer__feature offer__feature--adults">
-                  Max {maxAdults} {getPluralWord(maxAdults, 'adult', 'adults')}
-                </li>
-              </ul>
-              <div className="offer__price">
-                <b className="offer__price-value">&euro;{price}</b>
-                <span className="offer__price-text">&nbsp;night</span>
-              </div>
-              <div className="offer__inside">
-                <h2 className="offer__inside-title">What&apos;s inside</h2>
-                <ul className="offer__inside-list">
-                  {goods.map((good) => (
-                    <li key={good} className="offer__inside-item">
-                      {good}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="offer__host">
-                <h2 className="offer__host-title">Meet the host</h2>
-                <div className="offer__host-user user">
-                  <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                    <img
-                      className="offer__avatar user__avatar"
-                      src={host.avatarPath}
-                      width={HOST_AVATAR_SIZE.width}
-                      height={HOST_AVATAR_SIZE.height}
-                      alt="Host avatar"
-                    />
-                  </div>
-                  <span className="offer__user-name">{host.name}</span>
-                  {host.isPro && (
-                    <span className="offer__user-status">Pro</span>
-                  )}
-                </div>
-                <div className="offer__description">
-                  <p className="offer__text">{description}</p>
-                </div>
-              </div>
-              <ReviewsList commentCount={commentCount} reviews={reviews} />
+              <OfferHeader
+                title={title}
+                isPremium={isPremium}
+                price={price}
+                rating={rating}
+                isFavorite={isFavorite}
+                type={type}
+                bedrooms={bedrooms}
+                maxAdults={maxAdults}
+              />
+
+              <OfferGoods goods={goods} />
+
+              <OfferHost host={host} description={description} />
+
+              <ReviewsList reviews={reviews} />
             </div>
           </div>
-          <Map
-            city={offer.city}
-            offers={mapOffers}
-            selectedOffer={offer}
-            className="offer"
-          />
+
+          <Map city={city} offers={mapOffers} selectedOffer={currentOffer} className="offer" />
         </section>
+
         <div className="container">
           <section className="near-places places">
-            <h2 className="near-places__title">
-              Other places in the neighbourhood
-            </h2>
+            <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <OffersList offers={nearbyOffersToShow} layoutType="near-places" />
           </section>
         </div>
+
       </main>
     </div>
   );

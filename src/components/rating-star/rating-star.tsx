@@ -5,6 +5,7 @@ type RatingStarProps = {
   title: string;
   isChecked: boolean;
   onChange: (value: number) => void;
+  disabled?: boolean;
 };
 
 function RatingStar({
@@ -12,11 +13,8 @@ function RatingStar({
   title,
   isChecked,
   onChange,
+  disabled = false,
 }: RatingStarProps): JSX.Element {
-
-  const handleChange = () => {
-    onChange(value);
-  };
 
   return (
     <>
@@ -27,7 +25,8 @@ function RatingStar({
         id={`${value}-stars`}
         type="radio"
         checked={isChecked}
-        onChange={handleChange}
+        disabled={disabled}
+        onChange={() => !disabled && onChange(value)}
       />
       <label
         htmlFor={`${value}-stars`}

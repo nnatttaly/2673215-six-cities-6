@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { Offer, LayoutType } from 'types';
 import Rating from '@components/rating/rating.js';
-import { OFFER_CARD_IMAGE_SIZE, PLACE_CARD_BOOKMARK_ICON_SIZE } from 'consts';
+import { OFFER_CARD_IMAGE_SIZE, PLACE_CARD_BOOKMARK_ICON_SIZE, AppRoute } from 'consts';
 
 type OfferCardProps = {
   offer: Offer;
@@ -41,7 +41,7 @@ function OfferCard({
         </div>
       )}
       <div className={`${layoutType}__image-wrapper place-card__image-wrapper`}>
-        <Link to={`/offer/${id}`}>
+        <Link to={generatePath(AppRoute.Offer, { id })}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -81,7 +81,7 @@ function OfferCard({
         </div>
         <Rating rating={rating} className="place-card" />
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`${AppRoute.Offer.replace(':id', id)}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

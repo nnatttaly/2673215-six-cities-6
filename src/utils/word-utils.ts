@@ -3,3 +3,10 @@ export const getPluralWord = (
   singular: string,
   plural: string
 ): string => count === 1 ? singular : plural;
+
+export const capitalizeFirstLetter = (str: string): string => {
+  if (!str || str.length === 0) {
+    return str;
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};

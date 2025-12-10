@@ -7,18 +7,13 @@ import OfferPage from '@pages/offer-page/offer-page';
 import NotFoundPage from '@pages/not-found-page/not-found-page';
 import PrivateRoute from '@components/private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { Offers, Review } from 'types';
 import { useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
 import { getAuthCheckedStatus } from '@store/user-process/selectors';
 import { getOffersDataLoadingStatus } from '@store/data-process/selectors';
 
-type AppScreenProps = {
-  offers: Offers;
-  reviews: Review[];
-};
 
-function App({ offers, reviews }: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
@@ -40,16 +35,7 @@ function App({ offers, reviews }: AppScreenProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Offer}
-            element={
-              <OfferPage
-                offer={offers[0]}
-                reviews={reviews}
-                nearbyOffers={offers.slice(1)}
-              />
-            } // ToDo: брать id предложения из пути
-          />
+          <Route path={AppRoute.Offer} element={<OfferPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

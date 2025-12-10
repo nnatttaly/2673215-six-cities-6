@@ -5,4 +5,5 @@ export const PAGE_TITLES: Record<AppRoute, string> = {
   [AppRoute.Login]: 'Авторизация',
   [AppRoute.Favorites]: 'Избранное',
   [AppRoute.Offer]: 'Предложение',
+  [AppRoute.NotFound]: 'Страница не найдена',
 } as const;
