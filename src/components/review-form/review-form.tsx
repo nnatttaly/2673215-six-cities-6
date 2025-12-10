@@ -1,35 +1,58 @@
 import { useState } from 'react';
-import React from 'react';
-import {
-  MIN_COMMENT_LENGTH,
-  MAX_COMMENT_LENGTH,
-  RATINGS,
-} from 'consts';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@hooks/index';
+import { fetchReviewsAction, postReviewAction } from '@store/api-actions';
+import { getIsReviewPosting } from '@store/offer-process/selectors';
+import { AuthorizationStatus, MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH, RATINGS, NameSpace } from 'consts';
 import RatingStar from '@components/rating-star/rating-star';
 
-function ReviewForm(): JSX.Element {
+function ReviewForm(): JSX.Element | null {
+  const dispatch = useAppDispatch();
+  const { id: offerId } = useParams<{ id: string }>();
+  const isPosting = useAppSelector(getIsReviewPosting);
+  const authStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
+
   const [reviewData, setReviewData] = useState({
     rating: 0,
     comment: '',
   });
 
-  const handleRatingChange = (value: number) => {
-    setReviewData({ ...reviewData, rating: value });
-  };
+  if (authStatus !== AuthorizationStatus.Auth) {
+    return null;
+  }
 
-  const handleCommentChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setReviewData({ ...reviewData, comment: evt.target.value });
+  const handleSubmit = (evt: React.FormEvent) => {
+    evt.preventDefault();
+
+    if (!offerId || isPosting) {
+      return;
+    }
+
+    dispatch(postReviewAction({
+      offerId,
+      comment: reviewData.comment,
+      rating: reviewData.rating,
+    })).then((action) => {
+      if (action.meta.requestStatus === 'fulfilled') {
+        setReviewData({ rating: 0, comment: '' });
+        dispatch(fetchReviewsAction(offerId));
+      }
+    });
   };
 
   const isSubmitDisabled =
+    isPosting ||
     reviewData.rating === 0 ||
     reviewData.comment.length < MIN_COMMENT_LENGTH ||
     reviewData.comment.length > MAX_COMMENT_LENGTH;
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setReviewData({ rating: 0, comment: '' });
-  }
+  const handleRatingChange = (value: number) => {
+    setReviewData((prev) => ({ ...prev, rating: value }));
+  };
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReviewData((prev) => ({ ...prev, comment: e.target.value }));
+  };
 
   return (
     <form
@@ -41,6 +64,7 @@ function ReviewForm(): JSX.Element {
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
+
       <div className="reviews__rating-form form__rating">
         {RATINGS.map(({ value, title }) => (
           <RatingStar
@@ -49,9 +73,11 @@ function ReviewForm(): JSX.Element {
             title={title}
             isChecked={reviewData.rating === value}
             onChange={handleRatingChange}
+            disabled={isPosting}
           />
         ))}
       </div>
+
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
@@ -59,7 +85,10 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={reviewData.comment}
         onChange={handleCommentChange}
+        disabled={isPosting}
+        maxLength={MAX_COMMENT_LENGTH}
       />
+
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set{' '}
@@ -70,6 +99,7 @@ function ReviewForm(): JSX.Element {
           </b>
           .
         </p>
+
         <button
           className="reviews__submit form__submit button"
           type="submit"

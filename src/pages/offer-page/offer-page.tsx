@@ -22,8 +22,6 @@ import {
   getReviews,
   getOfferDataLoadingStatus,
   getOfferError,
-  getNearbyOffersLoadingStatus,
-  getReviewsLoadingStatus,
   getRequestedOfferId,
 } from '@store/offer-process/selectors';
 import Spinner from '@components/loading/spinner';
@@ -38,8 +36,6 @@ function OfferPage(): JSX.Element {
   const reviews = useAppSelector(getReviews);
 
   const isOfferLoading = useAppSelector(getOfferDataLoadingStatus);
-  const isNearbyLoading = useAppSelector(getNearbyOffersLoadingStatus);
-  const isReviewsLoading = useAppSelector(getReviewsLoadingStatus);
   const error = useAppSelector(getOfferError);
 
   useEffect(() => {
@@ -66,11 +62,6 @@ function OfferPage(): JSX.Element {
   if (!currentOffer || error) {
     return <Navigate to={AppRoute.NotFound} replace />;
   }
-
-  if (isNearbyLoading || isReviewsLoading) {
-    return <Spinner />;
-  }
-
 
   const {
     title, isPremium, price, rating, images, bedrooms, maxAdults,

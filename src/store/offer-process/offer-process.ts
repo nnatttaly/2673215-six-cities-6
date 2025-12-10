@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from 'consts';
 import { Offer, Offers, Review } from 'types';
-import { fetchOfferAction, fetchNearbyOffersAction, fetchReviewsAction } from '../api-actions';
+import { fetchOfferAction, fetchNearbyOffersAction, fetchReviewsAction, postReviewAction } from '../api-actions';
 
 type OfferProcess = {
   currentOffer: Offer | null;
@@ -11,6 +11,8 @@ type OfferProcess = {
   isOfferDataLoading: boolean;
   isNearbyOffersLoading: boolean;
   isReviewsLoading: boolean;
+  isReviewPosting: boolean;
+  reviewPostingError: string | null;
   error: string | null;
 };
 
@@ -22,6 +24,8 @@ const initialState: OfferProcess = {
   isOfferDataLoading: false,
   isNearbyOffersLoading: false,
   isReviewsLoading: false,
+  isReviewPosting: false,
+  reviewPostingError: null,
   error: null,
 };
 
@@ -74,6 +78,19 @@ export const offerProcess = createSlice({
       })
       .addCase(fetchReviewsAction.rejected, (state) => {
         state.isReviewsLoading = false;
+      });
+
+    builder
+      .addCase(postReviewAction.pending, (state) => {
+        state.isReviewPosting = true;
+        state.reviewPostingError = null;
+      })
+      .addCase(postReviewAction.fulfilled, (state) => {
+        state.isReviewPosting = false;
+      })
+      .addCase(postReviewAction.rejected, (state) => {
+        state.isReviewPosting = false;
+        state.reviewPostingError = 'Failed to send review.';
       });
   }
 });

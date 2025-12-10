@@ -15,5 +15,9 @@ export const getNearbyOffersLoadingStatus = (state: State): boolean =>
   state[NameSpace.Offer].isNearbyOffersLoading;
 export const getReviewsLoadingStatus = (state: State): boolean =>
   state[NameSpace.Offer].isReviewsLoading;
+export const getIsReviewPosting = (state: State): boolean =>
+  state[NameSpace.Offer].isReviewPosting;
+export const getReviewPostingError = (state: State): string | null =>
+  state[NameSpace.Offer].reviewPostingError;
 export const getOfferError = (state: State): string | null =>
   state[NameSpace.Offer].error;
