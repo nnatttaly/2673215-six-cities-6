@@ -1,29 +1,25 @@
 import { getPluralWord } from '@utils/word-utils';
-import { City, Offer, SortOption } from 'types';
+import { City, Offers, SortOption } from 'types';
 import OffersList from '@components/offers-list/offers-list';
 import SortOptions from '@components/sort-options/sort-options';
 import Map from '@components/map/map.js';
 
 type PlacesSectionProps = {
   currentCity: City;
-  currentCityOffers: Offer[];
-  sortedOffers: Offer[];
-  selectedOffer: Offer | null;
+  offers: Offers;
+  selectedOfferId: string | null;
+  setSelectedOfferId: (offerId: string | null) => void;
   currentSort: SortOption;
-  onOfferHover: (offerId: string | null) => void;
   onSortChange: (sortOption: SortOption) => void;
-  onCardLeave: () => void;
 };
 
 function PlacesSection({
   currentCity,
-  currentCityOffers,
-  sortedOffers,
-  selectedOffer,
+  offers,
+  selectedOfferId,
+  setSelectedOfferId,
   currentSort,
-  onOfferHover,
   onSortChange,
-  onCardLeave,
 }: PlacesSectionProps): JSX.Element {
 
   return (
@@ -31,8 +27,8 @@ function PlacesSection({
       <section className="cities__places places">
         <h2 className="visually-hidden">Places</h2>
         <b className="places__found">
-          {currentCityOffers.length}{' '}
-          {getPluralWord(currentCityOffers.length, 'place', 'places')} to
+          {offers.length}{' '}
+          {getPluralWord(offers.length, 'place', 'places')} to
           stay in {currentCity.name}
         </b>
         <SortOptions
@@ -41,19 +37,18 @@ function PlacesSection({
         />
 
         <OffersList
-          offers={sortedOffers}
-          layoutType="cities"
-          onCardHover={onOfferHover}
-          onCardLeave={onCardLeave}
+          offers={offers}
+          variant="cities"
+          setSelectedOfferId={setSelectedOfferId}
         />
       </section>
       <div className="cities__right-section">
         {currentCity && (
           <Map
             city={currentCity}
-            offers={currentCityOffers}
-            selectedOffer={selectedOffer}
-            className="cities"
+            offers={offers}
+            selectedOfferId={selectedOfferId}
+            variant="cities"
           />
         )}
       </div>

@@ -1,32 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from 'consts';
-import { Offer, Offers, Review } from 'types';
-import { fetchOfferAction, fetchNearbyOffersAction, fetchReviewsAction, postReviewAction } from '../api-actions';
+import { Offer, Offers } from 'types';
+import { fetchOfferAction, fetchNearbyOffersAction, changeFavoriteStatusAction } from '../api-actions';
 
 type OfferProcess = {
   currentOffer: Offer | null;
   requestedOfferId: string | null;
   nearbyOffers: Offers;
-  reviews: Review[];
-  isOfferDataLoading: boolean;
+  isOfferLoading: boolean;
   isNearbyOffersLoading: boolean;
-  isReviewsLoading: boolean;
-  isReviewPosting: boolean;
-  reviewPostingError: string | null;
-  error: string | null;
 };
 
 const initialState: OfferProcess = {
   currentOffer: null,
   requestedOfferId: null,
   nearbyOffers: [],
-  reviews: [],
-  isOfferDataLoading: false,
+  isOfferLoading: false,
   isNearbyOffersLoading: false,
-  isReviewsLoading: false,
-  isReviewPosting: false,
-  reviewPostingError: null,
-  error: null,
 };
 
 export const offerProcess = createSlice({
@@ -35,28 +25,25 @@ export const offerProcess = createSlice({
   reducers: {
     clearOfferData: (state) => {
       state.currentOffer = null;
+      state.requestedOfferId = null;
       state.nearbyOffers = [];
-      state.reviews = [];
     },
   },
   extraReducers(builder) {
     builder
       .addCase(fetchOfferAction.pending, (state, action) => {
-        state.isOfferDataLoading = true;
-        state.error = null;
-        state.currentOffer = null;
+        state.isOfferLoading = true;
         state.requestedOfferId = action.meta.arg;
       })
       .addCase(fetchOfferAction.fulfilled, (state, action: PayloadAction<Offer>) => {
         state.currentOffer = action.payload;
-        state.isOfferDataLoading = false;
+        state.isOfferLoading = false;
       })
-      .addCase(fetchOfferAction.rejected, (state, action) => {
-        state.isOfferDataLoading = false;
-        state.error = action.error.message || 'Failed to load offer';
-      });
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.isOfferLoading = false;
+        state.currentOffer = null;
+      })
 
-    builder
       .addCase(fetchNearbyOffersAction.pending, (state) => {
         state.isNearbyOffersLoading = true;
       })
@@ -66,31 +53,22 @@ export const offerProcess = createSlice({
       })
       .addCase(fetchNearbyOffersAction.rejected, (state) => {
         state.isNearbyOffersLoading = false;
-      });
+        state.nearbyOffers = [];
+      })
 
-    builder
-      .addCase(fetchReviewsAction.pending, (state) => {
-        state.isReviewsLoading = true;
-      })
-      .addCase(fetchReviewsAction.fulfilled, (state, action: PayloadAction<Review[]>) => {
-        state.reviews = action.payload;
-        state.isReviewsLoading = false;
-      })
-      .addCase(fetchReviewsAction.rejected, (state) => {
-        state.isReviewsLoading = false;
-      });
+      .addCase(changeFavoriteStatusAction.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
 
-    builder
-      .addCase(postReviewAction.pending, (state) => {
-        state.isReviewPosting = true;
-        state.reviewPostingError = null;
-      })
-      .addCase(postReviewAction.fulfilled, (state) => {
-        state.isReviewPosting = false;
-      })
-      .addCase(postReviewAction.rejected, (state) => {
-        state.isReviewPosting = false;
-        state.reviewPostingError = 'Failed to send review.';
+        if (state.currentOffer?.id === updatedOffer.id) {
+          state.currentOffer.isFavorite = updatedOffer.isFavorite;
+        }
+
+        state.nearbyOffers = state.nearbyOffers.map((offer) => {
+          if (offer.id === updatedOffer.id) {
+            return { ...offer, isFavorite: updatedOffer.isFavorite };
+          }
+          return offer;
+        });
       });
   }
 });

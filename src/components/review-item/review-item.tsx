@@ -28,7 +28,7 @@ function ReviewItem({ review }: ReviewItemProps): JSX.Element {
         <span className="reviews__user-name">{user.name}</span>
       </div>
       <div className="reviews__info">
-        <Rating rating={rating} className="reviews" />
+        <Rating rating={rating} variant="reviews" />
         <p className="reviews__text">{comment}</p>
         <time className="reviews__time" dateTime={dateTimeString}>
           {formattedDate}

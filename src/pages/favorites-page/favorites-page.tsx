@@ -4,21 +4,15 @@ import { useAppSelector } from '@hooks/index.js';
 import { CITIES } from 'consts';
 import CityTitle from '@components/city-title/city-title';
 import Header from '@components/header/header';
-import { getOffers } from '@store/data-process/selectors';
-import { useMemo } from 'react';
+import { getFavorites } from '@store/favorites-process/selectors';
 
 function FavoritesPage(): JSX.Element {
-  const allOffers = useAppSelector(getOffers);
-
-  const favoriteOffers = useMemo(() =>
-    allOffers.filter((offer) => offer.isFavorite),
-  [allOffers]
-  );
+  const favoriteOffers = useAppSelector(getFavorites);
 
   return (
     <div className="page">
       <PageHelmet />
-      <Header showNavigation={false} />
+      <Header />
 
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
@@ -41,7 +35,7 @@ function FavoritesPage(): JSX.Element {
                       <div className="favorites__places">
                         <OffersList
                           offers={cityOffers}
-                          layoutType="favorites"
+                          variant="favorites"
                         />
                       </div>
                     </li>

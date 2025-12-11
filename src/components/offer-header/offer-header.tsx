@@ -1,8 +1,9 @@
 import Rating from '@components/rating/rating.js';
 import { capitalizeFirstLetter, getPluralWord } from '@utils/word-utils';
-import { OFFER_BOOKMARK_ICON_SIZE } from 'consts';
+import BookmarkButton from '@components/bookmark-button/bookmark-button';
 
 type OfferHeaderProps = {
+  offerId: string;
   title: string;
   isPremium: boolean;
   price: number;
@@ -14,6 +15,7 @@ type OfferHeaderProps = {
 };
 
 function OfferHeader({
+  offerId,
   title,
   isPremium,
   price,
@@ -23,6 +25,7 @@ function OfferHeader({
   bedrooms,
   maxAdults,
 }: OfferHeaderProps): JSX.Element {
+
   return (
     <>
       {isPremium && (
@@ -33,20 +36,14 @@ function OfferHeader({
 
       <div className="offer__name-wrapper">
         <h1 className="offer__name">{title}</h1>
-        <button
-          className={`offer__bookmark-button ${isFavorite ? 'offer__bookmark-button--active' : ''} button`}
-          type="button"
-        >
-          <svg className="offer__bookmark-icon" width={OFFER_BOOKMARK_ICON_SIZE.width} height={OFFER_BOOKMARK_ICON_SIZE.height}>
-            <use xlinkHref="#icon-bookmark" />
-          </svg>
-          <span className="visually-hidden">
-            {isFavorite ? 'In' : 'To'} bookmarks
-          </span>
-        </button>
+        <BookmarkButton
+          offerId={offerId}
+          isFavorite={isFavorite}
+          variant="offer"
+        />
       </div>
 
-      <Rating rating={rating} className="offer" showValue />
+      <Rating rating={rating} variant="offer" showValue />
 
       <ul className="offer__features">
         <li className="offer__feature offer__feature--entire">

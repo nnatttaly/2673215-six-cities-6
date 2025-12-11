@@ -1,69 +1,63 @@
-import { Offer, SortOption } from 'types';
+import { City, SortOption } from 'types';
 import PageHelmet from '@components/page-helmet/page-helmet.js';
 import { useMemo, useState } from 'react';
 import CitiesList from '@components/cities-list/cities-list';
 import { useAppDispatch, useAppSelector } from '@hooks/index.js';
-import { changeCity } from '@store/action';
 import { sortOffers } from '@utils/sort-utils';
 import { DEFAULT_SORT_OPTION } from 'consts';
 import Header from '@components/header/header';
-import { getCity, getOffers } from '@store/data-process/selectors';
+import { getCity, getOffersByCity, getOffersLoadingStatus } from '@store/data-process/selectors';
 import PlacesSection from '@components/places-section/places-section';
 import EmptyPlacesSection from '@components/empty-places-section/empty-places-section';
+import { changeCity } from '@store/data-process/data-process';
+import Spinner from '@components/loading/spinner';
 
 function MainPage(): JSX.Element {
   const currentCity = useAppSelector(getCity);
-  const allOffers = useAppSelector(getOffers);
-
-  const currentCityOffers = useMemo(() => {
-    const cityName = currentCity.name;
-    return allOffers.filter((offer) => offer.city.name === cityName);
-  }, [allOffers, currentCity]);
-
+  const currentCityOffers = useAppSelector(getOffersByCity);
+  const isOffersLoading = useAppSelector(getOffersLoadingStatus);
   const hasNoOffers = currentCityOffers.length === 0;
 
   const dispatch = useAppDispatch();
-
-  const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null);
+  const [selectedOfferId, setSelectedOfferId] = useState<string | null>(null);
   const [currentSort, setCurrentSort] = useState<SortOption>(DEFAULT_SORT_OPTION);
+
   const sortedOffers = useMemo(
     () => sortOffers(currentCityOffers, currentSort),
     [currentCityOffers, currentSort]
   );
 
-  const handleOfferHover = (offerId: string | null) => {
-    const offer = offerId
-      ? currentCityOffers.find((item) => item.id === offerId)
-      : null;
-    setSelectedOffer(offer || null);
+  const handleCityChange = (city: City) => {
+    dispatch(changeCity(city));
+    setSelectedOfferId(null);
+    setCurrentSort(DEFAULT_SORT_OPTION);
   };
+  const mainClassName = `page__main page__main--index ${hasNoOffers ? 'page__main--index-empty' : ''}`;
 
   return (
     <div className="page page--gray page--main">
       <PageHelmet />
       <Header />
 
-      <main className={`page__main page__main--index ${hasNoOffers ? 'page__main--index-empty' : ''}`}>
+      <main className={mainClassName}>
         <h1 className="visually-hidden">Cities</h1>
         <CitiesList
           currentCity={currentCity}
-          onCityChange={(city) => dispatch(changeCity(city))}
+          onCityChange={handleCityChange}
         />
         <div className="cities">
-          {
-            hasNoOffers ?
-              <EmptyPlacesSection currentCity={currentCity}/> :
-              <PlacesSection
-                currentCity={currentCity}
-                currentCityOffers={currentCityOffers}
-                sortedOffers={sortedOffers}
-                selectedOffer={selectedOffer}
-                currentSort={currentSort}
-                onOfferHover={handleOfferHover}
-                onSortChange={(sortOption) => setCurrentSort(sortOption)}
-                onCardLeave={() => setSelectedOffer(null)}
-              />
-          }
+          {isOffersLoading && <Spinner />}
+          {!isOffersLoading && hasNoOffers && <EmptyPlacesSection currentCity={currentCity} />}
+          {!isOffersLoading && !hasNoOffers && (
+            <PlacesSection
+              currentCity={currentCity}
+              offers={sortedOffers}
+              selectedOfferId={selectedOfferId}
+              setSelectedOfferId={setSelectedOfferId}
+              currentSort={currentSort}
+              onSortChange={setCurrentSort}
+            />
+          )}
         </div>
       </main>
     </div>

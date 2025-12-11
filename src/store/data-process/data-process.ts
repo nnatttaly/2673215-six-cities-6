@@ -1,39 +1,48 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace, DEFAULT_CITY } from 'consts';
 import { Offers, City } from 'types';
-import { fetchOffersAction } from '../api-actions';
-import { changeCity } from '../action';
+import { fetchOffersAction, changeFavoriteStatusAction } from '../api-actions';
 
 type DataProcess = {
   city: City;
   offers: Offers;
-  isOffersDataLoading: boolean;
+  isOffersLoading: boolean;
 };
 
 const initialState: DataProcess = {
   city: DEFAULT_CITY,
   offers: [],
-  isOffersDataLoading: false,
+  isOffersLoading: false,
 };
 
 export const dataProcess = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {},
+  reducers: {
+    changeCity: (state, action: PayloadAction<City>) => {
+      state.city = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
-        state.isOffersDataLoading = true;
+        state.isOffersLoading = true;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action: PayloadAction<Offers>) => {
         state.offers = action.payload;
-        state.isOffersDataLoading = false;
+        state.isOffersLoading = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
-        state.isOffersDataLoading = false;
+        state.isOffersLoading = false;
       })
-      .addCase(changeCity, (state, action: PayloadAction<City>) => {
-        state.city = action.payload;
+      .addCase(changeFavoriteStatusAction.fulfilled, (state, action) => {
+        const updatedOffer = action.payload;
+        const offer = state.offers.find((o) => o.id === updatedOffer.id);
+        if (offer) {
+          offer.isFavorite = updatedOffer.isFavorite;
+        }
       });
   }
 });
+
+export const { changeCity } = dataProcess.actions;

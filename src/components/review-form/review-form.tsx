@@ -1,25 +1,23 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { fetchReviewsAction, postReviewAction } from '@store/api-actions';
-import { getIsReviewPosting } from '@store/offer-process/selectors';
-import { AuthorizationStatus, MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH, RATINGS, NameSpace } from 'consts';
+import { postReviewAction } from '@store/api-actions';
+import { MIN_COMMENT_LENGTH, MAX_COMMENT_LENGTH, RATINGS } from 'consts';
 import RatingStar from '@components/rating-star/rating-star';
+import { getReviewPostingStatus } from '@store/reviews-process/selectors';
 
-function ReviewForm(): JSX.Element | null {
+type ReviewForm = {
+  offerId: string;
+};
+
+function ReviewForm({offerId}: ReviewForm): JSX.Element | null {
   const dispatch = useAppDispatch();
-  const { id: offerId } = useParams<{ id: string }>();
-  const isPosting = useAppSelector(getIsReviewPosting);
-  const authStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
+  const isPosting = useAppSelector(getReviewPostingStatus);
 
   const [reviewData, setReviewData] = useState({
     rating: 0,
     comment: '',
   });
 
-  if (authStatus !== AuthorizationStatus.Auth) {
-    return null;
-  }
 
   const handleSubmit = (evt: React.FormEvent) => {
     evt.preventDefault();
@@ -30,21 +28,20 @@ function ReviewForm(): JSX.Element | null {
 
     dispatch(postReviewAction({
       offerId,
-      comment: reviewData.comment,
+      comment: reviewData.comment.trim(),
       rating: reviewData.rating,
-    })).then((action) => {
-      if (action.meta.requestStatus === 'fulfilled') {
-        setReviewData({ rating: 0, comment: '' });
-        dispatch(fetchReviewsAction(offerId));
-      }
-    });
+    }))
+      .unwrap()
+      .then(() => setReviewData({rating: 0, comment: ''}));
+
   };
 
+  const reviewLength = reviewData.comment.trim().length;
   const isSubmitDisabled =
     isPosting ||
     reviewData.rating === 0 ||
-    reviewData.comment.length < MIN_COMMENT_LENGTH ||
-    reviewData.comment.length > MAX_COMMENT_LENGTH;
+    reviewLength < MIN_COMMENT_LENGTH ||
+    reviewLength > MAX_COMMENT_LENGTH;
 
   const handleRatingChange = (value: number) => {
     setReviewData((prev) => ({ ...prev, rating: value }));

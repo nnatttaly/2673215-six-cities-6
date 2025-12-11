@@ -1,36 +1,23 @@
-import OfferCard from '../offer-card/offer-card';
-import { Offers, LayoutType } from 'types';
-import { useState } from 'react';
+import OfferCard from '@components/offer-card/offer-card';
+import { Offers } from 'types';
 
 type OffersListProps = {
   offers: Offers;
-  layoutType: LayoutType;
-  onCardHover?: (offerId: string | null) => void;
-  onCardLeave?: () => void;
+  variant: 'cities' | 'near-places' | 'favorites';
+  setSelectedOfferId?: (offerId: string | null) => void;
 };
 
 function OffersList({
   offers,
-  layoutType,
-  onCardHover,
-  onCardLeave,
+  variant,
+  setSelectedOfferId,
 }: OffersListProps): JSX.Element {
-  const [, setActiveOfferId] = useState<string | null>(null);
+
   const listClass = {
-    cities: 'cities__places-list places__list tabs__content',
-    favorites: 'favorites__places',
+    'cities': 'cities__places-list places__list tabs__content',
+    'favorites': 'favorites__places',
     'near-places': 'near-places__list places__list',
-  }[layoutType];
-
-  const handleCardHover = (offerId: string | null) => {
-    setActiveOfferId(offerId);
-    onCardHover?.(offerId);
-  };
-
-  const handleCardLeave = () => {
-    setActiveOfferId(null);
-    onCardLeave?.();
-  };
+  }[variant];
 
   return (
     <div className={listClass}>
@@ -38,9 +25,8 @@ function OffersList({
         <OfferCard
           key={offer.id}
           offer={offer}
-          onCardHover={handleCardHover}
-          onCardLeave={handleCardLeave}
-          layoutType={layoutType}
+          variant={variant}
+          setSelectedOfferId={setSelectedOfferId}
         />
       ))}
     </div>

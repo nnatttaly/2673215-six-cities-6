@@ -14,7 +14,7 @@ function SortOptions({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSortClick = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const handleOptionClick = (option: SortOption) => {
@@ -40,8 +40,8 @@ function SortOptions({
         </svg>
       </span>
       <ul
-        className={`places__options places__options--custom ${
-          isOpen ? 'places__options--opened' : ''
+        className={`places__options places__options--custom${
+          isOpen ? ' places__options--opened' : ''
         }`}
       >
         {SORT_OPTIONS.map((option) => (

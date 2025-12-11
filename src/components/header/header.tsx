@@ -1,20 +1,29 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
-import { AppRoute, LOGO_SIZE, AuthorizationStatus } from 'consts';
-import { logoutAction } from '@store/api-actions';
+import { AppRoute, AuthorizationStatus } from 'consts';
+import { fetchFavoritesAction, logoutAction } from '@store/api-actions';
 import { getAuthorizationStatus, getUserData } from '@store/user-process/selectors';
+import { getFavoritesCount } from '@store/favorites-process/selectors';
+import Logo from '@components/logo/logo';
+import { useEffect } from 'react';
 
 type HeaderProps = {
   showNavigation?: boolean;
 };
 
 function Header({ showNavigation = true }: HeaderProps): JSX.Element {
+  const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const userData = useAppSelector(getUserData);
-
   const isAuth = authorizationStatus === AuthorizationStatus.Auth;
 
-  const dispatch = useAppDispatch();
+  const userData = useAppSelector(getUserData);
+  const favoritesCount = useAppSelector(getFavoritesCount);
+
+  useEffect(() => {
+    if (isAuth) {
+      dispatch(fetchFavoritesAction()).unwrap();
+    }
+  }, [dispatch, isAuth]);
 
   const handleLogoutClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,15 +35,7 @@ function Header({ showNavigation = true }: HeaderProps): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link header__logo-link--active" to={AppRoute.Main}>
-              <img
-                className="header__logo"
-                src="img/logo.svg"
-                alt="6 cities logo"
-                width={LOGO_SIZE.width}
-                height={LOGO_SIZE.height}
-              />
-            </Link>
+            <Logo/>
           </div>
 
           {showNavigation && (
@@ -52,7 +53,7 @@ function Header({ showNavigation = true }: HeaderProps): JSX.Element {
                         <span className="header__user-name user__name">
                           {userData.email}
                         </span>
-                        <span className="header__favorite-count">3</span>
+                        <span className="header__favorite-count">{favoritesCount}</span>
                       </>
                     ) : (
                       <span className="header__login">Sign in</span>

@@ -10,14 +10,11 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
 import { getAuthCheckedStatus } from '@store/user-process/selectors';
-import { getOffersDataLoadingStatus } from '@store/data-process/selectors';
-
 
 function App(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  const isOffersDataLoading = useAppSelector(getOffersDataLoadingStatus);
 
-  if (!isAuthChecked || isOffersDataLoading) {
+  if (!isAuthChecked) {
     return <Spinner />;
   }
 
