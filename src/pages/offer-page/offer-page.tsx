@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import OffersList from '@components/offers-list/offers-list.js';
@@ -12,31 +12,40 @@ import Map from '@components/map/map.js';
 import {
   NEARBY_OFFERS_LIMIT,
   AppRoute,
+  AuthorizationStatus,
 } from 'consts';
 import Header from '@components/header/header';
 import { fetchOfferAction, fetchNearbyOffersAction, fetchReviewsAction } from '@store/api-actions';
-import { clearOfferData } from '@store/offer-process/offer-process';
 import {
   getCurrentOffer,
   getNearbyOffers,
-  getReviews,
   getOfferDataLoadingStatus,
-  getOfferError,
   getRequestedOfferId,
 } from '@store/offer-process/selectors';
 import Spinner from '@components/loading/spinner';
+import { getReviews } from '@store/reviews-process/selectors';
+import ReviewForm from '@components/review-form/review-form';
+import { getAuthorizationStatus } from '@store/user-process/selectors';
+import { clearOfferData } from '@store/offer-process/offer-process';
+import { clearReviewsData } from '@store/reviews-process/reviews-process';
 
 function OfferPage(): JSX.Element {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
 
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuth = authorizationStatus === AuthorizationStatus.Auth;
+
   const currentOffer = useAppSelector(getCurrentOffer);
-  const requestedOfferId = useAppSelector(getRequestedOfferId);
   const nearbyOffers = useAppSelector(getNearbyOffers);
   const reviews = useAppSelector(getReviews);
-
+  const requestedOfferId = useAppSelector(getRequestedOfferId);
   const isOfferLoading = useAppSelector(getOfferDataLoadingStatus);
-  const error = useAppSelector(getOfferError);
+
+  const nearbyOffersToShow = useMemo(
+    () => nearbyOffers.slice(0, NEARBY_OFFERS_LIMIT),
+    [nearbyOffers]
+  );
 
   useEffect(() => {
     if (id) {
@@ -47,28 +56,23 @@ function OfferPage(): JSX.Element {
 
     return () => {
       dispatch(clearOfferData());
+      dispatch(clearReviewsData());
     };
   }, [dispatch, id]);
-
-
-  if (!id) {
-    return <Navigate to={AppRoute.NotFound} replace />;
-  }
 
   if (requestedOfferId !== id || isOfferLoading) {
     return <Spinner />;
   }
 
-  if (!currentOffer || error) {
+  if (!currentOffer) {
     return <Navigate to={AppRoute.NotFound} replace />;
   }
 
   const {
-    title, isPremium, price, rating, images, bedrooms, maxAdults,
+    id: offerId, title, isPremium, price, rating, images, bedrooms, maxAdults,
     type, goods, host, description, isFavorite, city
   } = currentOffer;
 
-  const nearbyOffersToShow = nearbyOffers.slice(0, NEARBY_OFFERS_LIMIT);
   const mapOffers = [currentOffer, ...nearbyOffersToShow];
 
   return (
@@ -84,6 +88,7 @@ function OfferPage(): JSX.Element {
           <div className="offer__container container">
             <div className="offer__wrapper">
               <OfferHeader
+                offerId={offerId}
                 title={title}
                 isPremium={isPremium}
                 price={price}
@@ -98,17 +103,23 @@ function OfferPage(): JSX.Element {
 
               <OfferHost host={host} description={description} />
 
-              <ReviewsList reviews={reviews} />
+              <section className="offer__reviews reviews">
+                <h2 className="reviews__title">
+                  Reviews &middot; <span className="reviews__amount">{reviews.length}</span>
+                </h2>
+                <ReviewsList reviews={reviews} />
+                {isAuth && <ReviewForm offerId={currentOffer.id}/>}
+              </section>
             </div>
           </div>
 
-          <Map city={city} offers={mapOffers} selectedOffer={currentOffer} className="offer" />
+          <Map city={city} offers={mapOffers} selectedOfferId={offerId} variant="offer" />
         </section>
 
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <OffersList offers={nearbyOffersToShow} layoutType="near-places" />
+            <OffersList offers={nearbyOffersToShow} variant="near-places" />
           </section>
         </div>
 

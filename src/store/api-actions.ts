@@ -3,8 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Offers, AppDispatch, State, AuthData, UserData, Offer, Review } from 'types';
 import { APIRoute } from 'consts';
 import { saveToken, dropToken } from '@services/token';
-import { TIMEOUT_SHOW_ERROR } from 'consts';
-import { clearError } from './app-process/app-process';
 
 export const fetchOffersAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
@@ -55,16 +53,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const clearErrorAction = createAsyncThunk(
-  'app/clearError',
-  (_, { dispatch }) => new Promise<void>((resolve) => {
-    setTimeout(() => {
-      dispatch(clearError());
-      resolve();
-    }, TIMEOUT_SHOW_ERROR);
-  }),
-);
-
 export const fetchOfferAction = createAsyncThunk<Offer, string, {
   dispatch: AppDispatch;
   state: State;
@@ -102,7 +90,7 @@ export const fetchReviewsAction = createAsyncThunk<Review[], string, {
 );
 
 export const postReviewAction = createAsyncThunk<
-  Review[],
+  Review,
   { offerId: string; comment: string; rating: number },
   {
     dispatch: AppDispatch;
@@ -112,10 +100,36 @@ export const postReviewAction = createAsyncThunk<
 >(
   'offer/postReview',
   async ({ offerId, comment, rating }, { extra: api }) => {
-    const { data } = await api.post<Review[]>(
+    const { data } = await api.post<Review>(
       `${APIRoute.Reviews}/${offerId}`,
       { comment, rating }
     );
     return data;
   }
+);
+
+export const changeFavoriteStatusAction = createAsyncThunk<Offer, { offerId: string; status: number }, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/changeStatus',
+  async ({ offerId, status }, { extra: api }) => {
+    const { data } = await api.post<Offer>(
+      `${APIRoute.Favorite}/${offerId}/${status}`
+    );
+    return data;
+  },
+);
+
+export const fetchFavoritesAction = createAsyncThunk<Offers, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'favorites/fetchFavorites',
+  async (_arg, { extra: api }) => {
+    const { data } = await api.get<Offers>(APIRoute.Favorite);
+    return data;
+  },
 );

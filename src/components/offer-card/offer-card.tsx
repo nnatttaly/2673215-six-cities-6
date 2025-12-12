@@ -1,20 +1,19 @@
 import { generatePath, Link } from 'react-router-dom';
-import { Offer, LayoutType } from 'types';
+import { Offer } from 'types';
 import Rating from '@components/rating/rating.js';
-import { OFFER_CARD_IMAGE_SIZE, PLACE_CARD_BOOKMARK_ICON_SIZE, AppRoute } from 'consts';
+import { OFFER_CARD_IMAGE_SIZE, AppRoute } from 'consts';
+import BookmarkButton from '@components/bookmark-button/bookmark-button';
 
 type OfferCardProps = {
   offer: Offer;
-  onCardHover: (offerId: string | null) => void;
-  onCardLeave: () => void;
-  layoutType: LayoutType;
+  variant: 'cities' | 'near-places' | 'favorites';
+  setSelectedOfferId?: (offerId: string | null) => void;
 };
 
 function OfferCard({
   offer,
-  onCardHover,
-  onCardLeave,
-  layoutType,
+  variant,
+  setSelectedOfferId,
 }: OfferCardProps): JSX.Element {
   const {
     id,
@@ -27,21 +26,22 @@ function OfferCard({
     rating,
   } = offer;
 
-  const { width, height } = OFFER_CARD_IMAGE_SIZE[layoutType];
+  const { width, height } = OFFER_CARD_IMAGE_SIZE[variant];
+  const infoClassName = `${variant === 'favorites' ? 'favorites__card-info ' : ''}place-card__info`;
 
   return (
     <article
-      className={`${layoutType}__card place-card`}
-      onMouseEnter={() => onCardHover(id)}
-      onMouseLeave={onCardLeave}
+      className={`${variant}__card place-card`}
+      onMouseEnter={setSelectedOfferId ? () => setSelectedOfferId(id) : undefined}
+      onMouseLeave={setSelectedOfferId ? () => setSelectedOfferId(null) : undefined}
     >
       {isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
         </div>
       )}
-      <div className={`${layoutType}__image-wrapper place-card__image-wrapper`}>
-        <Link to={generatePath(AppRoute.Offer, { id })}>
+      <div className={`${variant}__image-wrapper place-card__image-wrapper`}>
+        <Link to={generatePath(AppRoute.Offer, {id})}>
           <img
             className="place-card__image"
             src={previewImage}
@@ -52,36 +52,22 @@ function OfferCard({
         </Link>
       </div>
       <div
-        className={`${
-          layoutType === 'favorites' ? 'favorites__card-info ' : ''
-        }place-card__info`}
+        className={infoClassName}
       >
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text"> &#47;&nbsp;night</span>
           </div>
-          <button
-            className={`place-card__bookmark-button ${
-              isFavorite ? 'place-card__bookmark-button--active' : ''
-            } button`}
-            type="button"
-          >
-            <svg
-              className="place-card__bookmark-icon"
-              width={PLACE_CARD_BOOKMARK_ICON_SIZE.width}
-              height={PLACE_CARD_BOOKMARK_ICON_SIZE.height}
-            >
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">
-              {isFavorite ? 'In' : 'To'} bookmarks
-            </span>
-          </button>
+          <BookmarkButton
+            offerId={id}
+            isFavorite={isFavorite}
+            variant="place-card"
+          />
         </div>
-        <Rating rating={rating} className="place-card" />
+        <Rating rating={rating} variant="place-card" />
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Offer.replace(':id', id)}`}>{title}</Link>
+          <Link to={generatePath(AppRoute.Offer, {id})}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
