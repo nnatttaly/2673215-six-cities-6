@@ -1,5 +1,5 @@
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { AppRoute } from 'consts';
+import { AppRoute, AuthorizationStatus } from 'consts';
 import MainPage from '@pages/main-page/main-page';
 import LoginPage from '@pages/login-page/login-page';
 import FavoritesPage from '@pages/favorites-page/favorites-page';
@@ -7,14 +7,50 @@ import OfferPage from '@pages/offer-page/offer-page';
 import NotFoundPage from '@pages/not-found-page/not-found-page';
 import PrivateRoute from '@components/private-route/private-route';
 import { HelmetProvider } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import Spinner from '@components/loading/spinner';
-import { getAuthCheckedStatus } from '@store/user-process/selectors';
+import {
+  getAuthCheckedStatus,
+  getAuthorizationStatus
+} from '@store/user-process/selectors';
+import { getOffersLoadingStatus } from '@store/data-process/selectors';
+import { getFavoritesLoadingStatus } from '@store/favorites-process/selectors';
+import { useEffect } from 'react';
+import {
+  fetchOffersAction,
+  fetchFavoritesAction
+} from '@store/api-actions';
 
 function App(): JSX.Element {
+  const dispatch = useAppDispatch();
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const isAuth = authStatus === AuthorizationStatus.Auth;
+  const isOffersLoading = useAppSelector(getOffersLoadingStatus);
+  const isFavoritesLoading = useAppSelector(getFavoritesLoadingStatus);
 
-  if (!isAuthChecked) {
+  useEffect(() => {
+    if (!isAuthChecked) {
+      return;
+    }
+
+    const loadData = async () => {
+
+      const promises = [dispatch(fetchOffersAction()).unwrap()];
+
+      if (isAuth) {
+        promises.push(dispatch(fetchFavoritesAction()).unwrap());
+      }
+
+      await Promise.all(promises);
+
+    };
+
+    loadData();
+  }, [dispatch, isAuth, isAuthChecked]);
+
+
+  if (!isAuthChecked || isOffersLoading || (isAuth && isFavoritesLoading)) {
     return <Spinner />;
   }
 

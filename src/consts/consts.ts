@@ -23,7 +23,7 @@ export const IMAGES_LIMIT = 6 as const;
 export const MIN_COMMENT_LENGTH = 50 as const;
 export const MAX_COMMENT_LENGTH = 300 as const;
 export const REVIEWS_LIMIT = 10 as const;
-export const NEARBY_OFFERS_LIMIT = 3;
+export const NEARBY_OFFERS_LIMIT = 3 as const;
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
@@ -31,14 +31,11 @@ export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const BACKEND_URL = 'https://14.design.htmlacademy.pro/six-cities';
 export const REQUEST_TIMEOUT = 5000;
 
-export const TIMEOUT_SHOW_ERROR = 2000;
-
 export const AUTH_TOKEN_KEY_NAME = 'six-cities-token';
 
 export const NameSpace = {
   Data: 'DATA',
   User: 'USER',
-  App: 'APP',
   Offer: 'OFFER',
   Reviews: 'REVIEWS',
   Favorites: 'FAVORITES',

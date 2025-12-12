@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace, DEFAULT_CITY } from 'consts';
 import { Offers, City } from 'types';
-import { fetchOffersAction, changeFavoriteStatusAction } from '../api-actions';
+import { fetchOffersAction, changeFavoriteStatusAction, logoutAction } from '../api-actions';
 
 type DataProcess = {
   city: City;
@@ -22,6 +22,9 @@ export const dataProcess = createSlice({
     changeCity: (state, action: PayloadAction<City>) => {
       state.city = action.payload;
     },
+    resetCity: (state) => {
+      state.city = DEFAULT_CITY;
+    }
   },
   extraReducers(builder) {
     builder
@@ -41,6 +44,9 @@ export const dataProcess = createSlice({
         if (offer) {
           offer.isFavorite = updatedOffer.isFavorite;
         }
+      })
+      .addCase(logoutAction.fulfilled, (state) => {
+        state.city = DEFAULT_CITY;
       });
   }
 });

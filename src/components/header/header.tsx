@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@hooks/index';
 import { AppRoute, AuthorizationStatus } from 'consts';
-import { fetchFavoritesAction, logoutAction } from '@store/api-actions';
+import { logoutAction } from '@store/api-actions';
 import { getAuthorizationStatus, getUserData } from '@store/user-process/selectors';
 import { getFavoritesCount } from '@store/favorites-process/selectors';
 import Logo from '@components/logo/logo';
-import { useEffect } from 'react';
 
 type HeaderProps = {
   showNavigation?: boolean;
@@ -18,12 +17,6 @@ function Header({ showNavigation = true }: HeaderProps): JSX.Element {
 
   const userData = useAppSelector(getUserData);
   const favoritesCount = useAppSelector(getFavoritesCount);
-
-  useEffect(() => {
-    if (isAuth) {
-      dispatch(fetchFavoritesAction()).unwrap();
-    }
-  }, [dispatch, isAuth]);
 
   const handleLogoutClick = (e: React.MouseEvent) => {
     e.preventDefault();

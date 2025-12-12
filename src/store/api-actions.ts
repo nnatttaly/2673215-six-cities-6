@@ -3,8 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Offers, AppDispatch, State, AuthData, UserData, Offer, Review } from 'types';
 import { APIRoute } from 'consts';
 import { saveToken, dropToken } from '@services/token';
-import { TIMEOUT_SHOW_ERROR } from 'consts';
-import { clearError } from './app-process/app-process';
 
 export const fetchOffersAction = createAsyncThunk<Offers, undefined, {
   dispatch: AppDispatch;
@@ -53,16 +51,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoute.Logout);
     dropToken();
   },
-);
-
-export const clearErrorAction = createAsyncThunk(
-  'app/clearError',
-  (_, { dispatch }) => new Promise<void>((resolve) => {
-    setTimeout(() => {
-      dispatch(clearError());
-      resolve();
-    }, TIMEOUT_SHOW_ERROR);
-  }),
 );
 
 export const fetchOfferAction = createAsyncThunk<Offer, string, {
