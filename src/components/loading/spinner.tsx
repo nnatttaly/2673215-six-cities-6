@@ -1,6 +1,6 @@
 import './spinner.css';
 
-export default function Spinner() {
+function Spinner(): JSX.Element {
   return (
     <div className="spinner-container" aria-label="Загрузка">
       <div className="spinner">
@@ -9,3 +9,5 @@ export default function Spinner() {
     </div>
   );
 }
+
+export default Spinner;
