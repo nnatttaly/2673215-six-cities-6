@@ -1,4 +1,4 @@
-import { CITIES } from 'consts';
+import { AuthorizationStatus, CITIES, DEFAULT_CITY } from 'consts';
 import { name, internet, image, datatype, lorem, random, address, date } from 'faker';
 import { UserData, Offer, Offers, housingTypes, Location, User, Review, City } from 'types';
 import { Action } from 'redux';
@@ -44,7 +44,9 @@ export const makeFakeOffer = (): Offer => ({
   description: lorem.paragraph(),
   bedrooms: datatype.number({ min: 1, max: 8 }),
   maxAdults: datatype.number({ min: 1, max: 10 }),
-  images: Array.from({ length: 6 }, () => image.imageUrl()),
+  images: Array.from({ length: 6 }, (_, i) =>
+    `https://example.com/image${i + 1}.jpg`
+  ),
   rating: makeFakeRating(),
   goods: Array.from({ length: datatype.number({ min: 1, max: 7 }) }, () => lorem.word()),
   commentCount: datatype.number({ min: 0, max: 100 }),
@@ -67,3 +69,33 @@ export const makeFakeReview = (): Review => ({
 
 export const makeFakeReviews = (count: number): Review[] =>
   Array.from({ length: count }, makeFakeReview);
+
+export const makeFakeStore = (initialState?: Partial<State>): State => ({
+  DATA: {
+    city: DEFAULT_CITY,
+    offers: [],
+    isOffersLoading: false,
+  },
+  USER: {
+    authorizationStatus: AuthorizationStatus.NoAuth,
+    userData: null,
+  },
+  OFFER: {
+    currentOffer: null,
+    requestedOfferId: null,
+    nearbyOffers: [],
+    isOfferLoading: false,
+    isNearbyOffersLoading: false,
+  },
+  REVIEWS: {
+    reviews: [],
+    isReviewsLoading: false,
+    isReviewPosting: false,
+  },
+  FAVORITES: {
+    favorites: [],
+    isFavoritesLoading: false,
+  },
+
+  ...initialState ?? {},
+});
