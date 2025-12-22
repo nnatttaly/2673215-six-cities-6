@@ -1,4 +1,12 @@
-import matchers from '@testing-library/jest-dom/matchers';
-import { expect } from 'vitest';
+import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
-expect.extend(matchers);
+Object.defineProperty(window, 'scrollTo', {
+  value: vi.fn(),
+  writable: true,
+});
+
+Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+  value: vi.fn(),
+  writable: true,
+});

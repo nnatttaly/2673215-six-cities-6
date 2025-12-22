@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from 'consts';
 import MainPage from '@pages/main-page/main-page';
 import LoginPage from '@pages/login-page/login-page';
@@ -56,22 +56,20 @@ function App(): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path={AppRoute.Main} element={<MainPage />} />
-          <Route path={AppRoute.Login} element={<LoginPage />} />
-          <Route
-            path={AppRoute.Favorites}
-            element={
-              <PrivateRoute>
-                <FavoritesPage />
-              </PrivateRoute>
-            }
-          />
-          <Route path={AppRoute.Offer} element={<OfferPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path={AppRoute.Main} element={<MainPage />} />
+        <Route path={AppRoute.Login} element={<LoginPage />} />
+        <Route
+          path={AppRoute.Favorites}
+          element={
+            <PrivateRoute>
+              <FavoritesPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path={AppRoute.Offer} element={<OfferPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </HelmetProvider>
   );
 }
