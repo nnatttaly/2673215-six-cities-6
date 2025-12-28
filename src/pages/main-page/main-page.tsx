@@ -28,6 +28,9 @@ function MainPage(): JSX.Element {
   );
 
   const handleCityChange = (city: City) => {
+    if (city.name === currentCity.name) {
+      return;
+    }
     dispatch(changeCity(city));
     setSelectedOfferId(null);
     setCurrentSort(DEFAULT_SORT_OPTION);
