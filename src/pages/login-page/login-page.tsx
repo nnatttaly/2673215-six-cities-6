@@ -6,6 +6,7 @@ import { loginAction } from '@store/api-actions';
 import { AppRoute, AuthorizationStatus } from 'consts';
 import Header from '@components/header/header';
 import { getAuthorizationStatus } from '@store/user-process/selectors';
+import RandomCityLink from '@components/random-city-link/random-city-link';
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -86,18 +87,7 @@ function LoginPage(): JSX.Element {
             </form>
           </section>
           <section className="locations locations--login locations--current">
-            <div className="locations__item">
-              <a
-                className="locations__item-link"
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate(AppRoute.Main);
-                }}
-              >
-                <span>Amsterdam</span>
-              </a>
-            </div>
+            <RandomCityLink />
           </section>
         </div>
       </main>
